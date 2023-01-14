@@ -1,8 +1,8 @@
 # IPMA Server Application - CRUD / NodeJS
 
 # Funcionalidades
-- Este servidor, ainda pequeno, terá algumas funcionalidades muito importantes para o Instituto de Previdência.
-- Algumas delas:
+Este servidor, ainda pequeno, terá algumas funcionalidades muito importantes para o Instituto de Previdência.
+Algumas delas:
 - Cadastro de Usuários
 - Cadastro de Parcelamentos relativos aos convênios
 - Listagem de Usuários e Parcelamentos
