@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <%- include('../partials/head') %>
+<body>
+    <%- include('../partials/header') %>
+
+    <main class="container">
+        <section class="main-column">
+            <article class="post">
+                <h2 class="title">Painel</h2>
+                <h3>Selecione uma opção:</h3>
+
+                <div class="box">
+                    <a href="/usuarios">Listar Usuários Cadastrados</a>
+                    <a href="/parcelamentos">Listar Parcelamentos</a>                    
+                    <a href="/parcelas-pagas">Listar Parcelas Pagas</a>
+                    <a href="/cadastrar-usuario">Cadastrar Usuários</a>
+                    <a href="/cadastrar-parcelamento">Cadastrar Novo Parcelamento</a>
+                </div>
+
+            </article>
+        </section>
+
+        <%- include('../partials/sidecolumn') %>
+    </main>
+
+        <%- include('../partials/footer') %>
+</body>
+</html>
