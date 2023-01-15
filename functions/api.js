@@ -20,6 +20,13 @@ require("dotenv").config();
     // MIDDLEWARE FOR STATIC FILES
     app.use(express.static(path.join(__dirname, "public")));
 
+
+    // Session
+    app.use(session({
+        secret: 'blogapp',
+        resave: true,
+        saveUninitialized: true
+    }))
     // TO DISPLAY MESSAGES
     app.use(flash());
 

@@ -5,30 +5,30 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>IPMA - Parcelamentos</title>
-        <link rel="stylesheet" href="../css/style.css">
+        <link rel="stylesheet" href="css/style.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <script src="script/index.js" defer></script>
     </head>
 <body>
-    <%- include('../partials/header') %>
+    <%- include('../../partials/header') %>
 
     <main class="container">
         <section class="main-column">
             <article class="post">
-                <h2 class="title">Pagamentos</h2>
-                <a href="/novo-pagamento" class="btn">Novo Pagamento</a>
-                <table class="pagamentos">
+                <h2 class="title">Parcelamentos</h2>
+                <a href="/parcelamentos/cadastrar" class="btn">Novo Parcelamento</a>
+                <table class="parcelamentos">
                     <thead>
                         <tr>
                             <th>Matrícula</th>
                             <th>Nome</th>
                             <th>Orçamento</th>
                             <th>Nº Parcelas</th>
-                            <th>Valor Parc.</th>
-                            <th>Pago</th>
-                            <th>Data Pagamento</th>
-                            <th>Clínica</th>
+                            <th>Parc. Pagas</th>
                             <th>Data Início</th>
+                            <th>Clínica</th>
+                            <th>Aposentado</th>
+                            <th>Valor Parc.</th>
                             <th>Atualizar</th>
                         </tr>
                     </thead>
@@ -37,35 +37,29 @@
                         <% data.forEach(function(selection){ %>
                             <tr id=<%= selection.id %>>
                                 <td><%= selection.matricula %></td>
-                                <td><%= selection.nome %></td>
-                                <td>R$<%= selection.valor_total %></td>
-                                <td><%= selection.qtd_parcelas %></td>
-                                <td>R$<%= selection.valor_parcela %></td>
-                                <td><%= selection.pago %></td>
-                                <td><%= selection.data_pagamento %></td>
-                                <td><%= selection.clinica %></td>
+                                <td class="nome"><%= selection.nome %></td>
+                                <td>R$ <%= selection.valor_total %></td>
+                                <td><%= selection.qtd_parcelas %>X</td>
+                                <td><%= selection.qtd_parcelas_pagas %></td>
                                 <td><%= selection.data_inicio %></td>
+                                <td><%= selection.clinica %></td>
+                                <td><%= selection.aposentado %></td>
+                                <td class="valor-parcela">R$ <%= selection.valor_parcela %></td>
                                 <td class="td-anchor"><a href="/parcelamentos/atualizar" class="btn fa fa-edit table-anchor"></a></td>
                             </tr>
                         <% }); %>
+                        <tr class="total-row">
+                            <td colspan="8">Total =</td>
+                            <td class="total-price" colspan="1">R$ <%= totalPrice %></td>
+                        </tr>
                     </tbody>
                 </table>
             </article>
         </section>
 
-        <section class="side-column">
-            <div class="picture-container">
-                <div class="picture-box">
-                    <img src="../imgs/mountain.jpg" alt="Montanha">
-                </div>
-                <p class="paragraph">
-                    Os céus declaram a glória de Deus e o firmamento anuncia a obra das suas mãos. 
-                    <span class="ref">Salmos 19:1</span>
-                </p>
-            </div>
-        </section>
+        <%- include('../../partials/sidecolumn') %>
     </main>
 
-    <%- include('../partials/footer') %>
+    <%- include('../../partials/footer') %>
 </body>
 </html>

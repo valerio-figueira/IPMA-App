@@ -21,10 +21,10 @@ router.post("/cadastrar-dependente", async (req, res) => {
 
 // FORM TO CREATE NEW
 router.get("/cadastrar-usuario", async (req, res) => {
-    res.render("pages/novo-usuario")
+    res.render("pages/usuarios/novo-usuario")
 })
 router.get("/cadastrar-dependente", async (req, res) => {
-    res.render("pages/novo-dependente")
+    res.render("pages/dependentes/novo-dependente")
 })
 
 
@@ -61,7 +61,7 @@ router.get("/", async (req, res) => {
                     })
 
                     con.end();
-                    res.render("pages/listar-usuarios", {data});
+                    res.render("pages/usuarios/listar-usuarios", {data});
                 };
             });
         };
@@ -106,7 +106,7 @@ router.get("/consultar/:id", async (req, res) => {
                     console.log(userDetails)
 
                     con.end();
-                    res.render("pages/detalhes-usuario", {userDetails});
+                    res.render("pages/usuarios/detalhes-usuario", {userDetails});
                 };
             });
         };
