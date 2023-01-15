@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-    <%- include('../partials/head') %>
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>IPMA - Usuários</title>
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="script/index.js" defer></script>
+    </head>
 <body>
     <%- include('../partials/header') %>
 
@@ -8,7 +16,7 @@
         <section class="main-column">
             <article class="post">
                 <h2 class="title">Usuários</h2>
-                <a href="/cadastrar" class="btn">Cadastrar Usuário</a>
+                <a href="/usuarios/cadastrar" class="btn">Cadastrar Usuário</a>
                 <table class="usuarios">
                     <thead>
                         <tr>
@@ -16,16 +24,22 @@
                             <th>Nome</th>
                             <th>Aposentado</th>
                             <th>Data de Cadastro</th>
+                            <th>Atualizar</th>
+                            <th>Mais detalhes</th>
                         </tr>
                     </thead>
 
                     <tbody>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
+                        <% data.forEach(function(selection){ %>
+                            <tr>
+                                <td><%= selection.matricula %></td>
+                                <td><%= selection.nome %></td>
+                                <td><%= selection.aposentado %></td>
+                                <td><%= selection.data_cadastro %></td>
+                                <td class="td-anchor"><a href="/usuarios/atualizar" class="btn fa fa-edit table-anchor"></a></td>
+                                <td class="td-anchor"><a href="/usuarios/consultar/<%= selection.id %>" class="btn fa fa-angle-double-right table-anchor"></a></td>
+                            </tr>
+                        <% }); %>
                     </tbody>
                 </table>
             </article>

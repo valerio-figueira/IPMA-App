@@ -46,6 +46,21 @@ html{
 
 
 
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+
+
+
 *{
     font-family: 'Ubuntu', sans-serif;
     padding: 0; margin: 0;
@@ -60,7 +75,6 @@ body{
     max-width: 2000px;
     margin: auto;
     box-shadow: 0px 0px 10px 1px #0000006b;
-    height: 100vh;
 }
 
 
@@ -77,7 +91,8 @@ p{
     font-size: 1.3rem;
     margin: 1.5rem 0;
 }
-a.btn{
+a.btn, button.btn{
+    cursor: pointer;
     display: inline-block;
     font-size: 1.4rem;
     color: var(--light-green);
@@ -86,9 +101,9 @@ a.btn{
     margin: .5rem 0;
     border: 3px solid transparent;
 }
-a.btn:hover{
+a.btn:hover, button.btn:hover{
     border: 3px solid var(--light-green);
-    background-color: #283248;
+    background-color: #283248;    
 }
 
 
@@ -98,6 +113,7 @@ header.container{
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    flex-flow: row-reverse;
 
     padding: 1rem 7%;
 
@@ -264,12 +280,75 @@ tbody tr td.valor-parcela{
 
 
 
+/* FORMULÁRIO CADASTRO */
+form{
+    padding: 0 1rem 1rem;
+}
+fieldset{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 
+    padding: 1rem .5rem;
+    margin: 2rem 0 0;
+    border: 1px solid lightgray;
 
-
-
-
-
+    color: var(--font-color);
+}
+fieldset legend{
+    color: var(--font-color);
+    font-size: 1.3rem;
+}
+fieldset .box{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    
+    margin: .7rem 1rem;
+}
+fieldset input{
+    font-size: 1.3rem;
+    color: var(--font-color);
+    outline: 3px solid transparent;
+    padding: .3rem .5rem;
+    width: 100%;
+}
+fieldset input:disabled{
+    background-color: var(--gray-color);
+}
+fieldset input:focus{
+    outline: 3px solid var(--dark-green);
+}
+fieldset select{
+    font-size: 1.2rem;
+    padding: .3rem 5rem;
+    color: var(--font-color);
+    background-color: var(--gray-color);
+    border: 1px solid lightgray;
+    width: 100%;
+}
+fieldset .box.sexo{
+    display: flex;
+    justify-content: left;
+}
+fieldset .box.sexo .input-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+    gap: .5rem;
+    margin: 0 .7rem;
+}
+.sexo input{
+    width: 100%;
+}
+.sexo p{
+    font-size: 1rem;
+}
+form button.btn{
+    display: block;
+    margin: .7rem auto;
+}
 
 
 

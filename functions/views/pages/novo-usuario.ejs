@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>IPMA - Cadastrar Usuário</title>
+        <link rel="stylesheet" href="../css/style.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="script/index.js" defer></script>
+    </head>
+<body>
+    <%- include('../partials/header') %>
+
+    <main class="container">
+        <section class="main-column">
+            <article class="post">
+                <h2 class="title">Cadastrar Usuário</h2>
+
+                <form action="/cadastrar-usuario">
+                    <fieldset>
+                        <legend>Novo Titular</legend>
+
+                        <div class="box">
+                            <label for="matricula">Matrícula:</label>
+                            <input type="number" id="matricula" name="matricula">
+                        </div>
+
+                        <div class="box">
+                            <label for="nome">Nome:</label>
+                            <input type="text" id="nome" name="nome" required>
+                        </div>
+
+                        <div class="box">
+                            <label for="identidade">RG:</label>
+                            <input type="text" name="identidade" id="identidade">
+                        </div>
+
+                        <div class="box">
+                            <label for="data-exp">Data de Expedição:</label>
+                            <input type="date" id="data-exp" name="data-exp">
+                        </div>
+
+                        <div class="box">
+                            <label for="emissor">Órgão Emissor:</label>
+                            <input type="text" id="emissor" name="emissor">
+                        </div>
+
+                        <div class="box">
+                            <label for="cpf">CPF:</label>
+                            <input type="text" id="cpf" name="cpf" required>
+                        </div>
+
+                        <div class="sexo box">
+                            <p>Sexo: </p>
+                            <div class="input-container">
+                                <label for="masculino">M</label>
+                                <input type="radio" id="masculino" name="sexo" value="M">
+                                <label for="feminino">F</label>
+                                <input type="radio" id="feminino" name="sexo" value="F">
+                            </div>
+                        </div>
+
+                        <div class="box">
+                            <label for="estado-civil">Estado Civil:</label>
+                            <select name="estadoCivil" id="estado-civil">
+                                <option value="">Selecione</option>
+                                <option value="solteiro">Solteiro(a)</option>
+                                <option value="casado">Casado(a)</option>
+                                <option value="viuvo">Viúvo(a)</option>
+                            </select>
+                        </div>
+
+                        <div class="box">
+                            <label for="data-nasc">Data de Nascimento:</label>
+                            <input type="date" id="data-nasc" name="dataNasc">
+                        </div>
+
+                        <div class="box">
+                            <label for="cartao-sus">Cartão SUS:</label>
+                            <input type="text" id="cartao-sus" name="cartaoSUS">
+                        </div>
+
+                        <div class="box">
+                            <label for="endereco">Endereço: </label>
+                            <input type="text" id="endereco" name="endereco">
+                        </div>
+
+                        <div class="box">
+                            <label for="numero">Nº:</label>
+                            <input type="number" id="numero" name="numeroEnd">
+                        </div>
+
+                        <div class="box">
+                            <label for="bairro">Bairro:</label>
+                            <input type="text" id="bairro" name="bairro">
+                        </div>
+
+                        <div class="box">
+                            <label for="cidade">Cidade:</label>
+                            <input type="text" id="cidade" name="cidade">
+                        </div>
+                        
+                        <div class="box">
+                            <label for="nome-mae">Nome da mãe:</label>
+                            <input type="text" id="nome-mae" name="nomeMae">
+                        </div>
+
+                        <div class="box">
+                            <label for="nome-pai">Nome do pai:</label>
+                            <input type="text" id="nome-pai" name="nomePai">
+                        </div>
+
+                    </fieldset>
+                    <button type="submit" class="btn">Cadastrar Usuário</button>
+                </form>
+
+            </article>
+        </section>
+
+        <section class="side-column">
+            <div class="picture-container">
+                <div class="picture-box">
+                    <img src="../imgs/mountain.jpg" alt="Montanha">
+                </div>
+                <p class="paragraph">
+                    Os céus declaram a glória de Deus e o firmamento anuncia a obra das suas mãos. 
+                    <span class="ref">Salmos 19:1</span>
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <%- include('../partials/footer') %>
+</body>
+</html>
