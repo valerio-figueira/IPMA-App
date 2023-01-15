@@ -58,7 +58,7 @@ router.get("/", (req, res) => {
                     totalPrice = Number(totalPrice).toFixed(2);
 
                     con.end();
-                    res.render("pages/listar-parcelamentos", {data, totalPrice});
+                    res.render("parcelamentos/listar-parcelamentos", {data, totalPrice});
                 };
             });
         };
@@ -99,7 +99,7 @@ router.get("/pagamentos", async (req, res) => {
 
                   console.log(data)
                   con.end();
-                  res.render("pages/listar-pagamentos", {data});
+                  res.render("pagamentos/listar-pagamentos", {data});
               };
           });
       };
@@ -117,7 +117,7 @@ router.get("/pagamentos", async (req, res) => {
 //router.patch("/:id", async (req, res) => {})
 
 router.get("/atualizar", async (req, res) => {
-  res.render("pages/atualizar-parcelamento")
+  res.render("parcelamentos/atualizar-parcelamento")
 })
 
 

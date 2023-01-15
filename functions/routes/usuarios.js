@@ -21,10 +21,10 @@ router.post("/cadastrar-dependente", async (req, res) => {
 
 // FORM TO CREATE NEW
 router.get("/cadastrar-usuario", async (req, res) => {
-    res.render("pages/novo-usuario")
+    res.render("usuarios/novo-usuario")
 })
 router.get("/cadastrar-dependente", async (req, res) => {
-    res.render("pages/novo-dependente")
+    res.render("usuarios/novo-dependente")
 })
 
 
@@ -46,10 +46,10 @@ router.get("/", async (req, res) => {
                 if(error){
                     throw error;
                 } else{
-                    const data = result;
-                    console.log(data)
+                    const usuarios = result;
+                    console.log(usuarios)
 
-                    data.forEach(select => {
+                    usuarios.forEach(select => {
                       
                       // CONVERT BOOLEAN NUMBER TO STRING
                       if(select.aposentado == 1){
@@ -61,7 +61,7 @@ router.get("/", async (req, res) => {
                     })
 
                     con.end();
-                    res.render("pages/listar-usuarios", {data});
+                    res.render("usuarios/listar-usuarios", {usuarios});
                 };
             });
         };
@@ -86,27 +86,27 @@ router.get("/consultar/:id", async (req, res) => {
                 if(error){
                     throw error;
                 } else{
-                    const userDetails = result[0];
+                    const usuario = result[0];
                     
 
                     // CONVERT BOOLEAN NUMBER TO STRING
-                    if(userDetails.aposentado == 1){
-                        userDetails.aposentado = "Sim";
+                    if(usuario.aposentado == 1){
+                        usuario.aposentado = "Sim";
                     } else{
-                        userDetails.aposentado = "Não";
+                        usuario.aposentado = "Não";
                     }
 
                     // INSERTING DOTS AND DASH INTO CPF NUMBERS
-                    const cpf = userDetails.cpf.split("");
+                    const cpf = usuario.cpf.split("");
                     cpf.splice(3, 0, ".");
                     cpf.splice(7, 0, ".");
                     cpf.splice(11, 0, "-");
-                    userDetails.cpf = cpf.join("");
+                    usuario.cpf = cpf.join("");
 
-                    console.log(userDetails)
+                    console.log(usuario)
 
                     con.end();
-                    res.render("pages/detalhes-usuario", {userDetails});
+                    res.render("usuarios/detalhes-usuario", {usuario});
                 };
             });
         };

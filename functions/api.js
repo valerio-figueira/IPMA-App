@@ -7,6 +7,8 @@ const Usuarios = require("./routes/usuarios");
 const Parcelamentos = require("./routes/parcelamentos");
 const flash = require("connect-flash");
 const session = require("express-session");
+const handlebars = require("express-handlebars");
+const bodyParser = require("body-parser");
 require("dotenv").config();
 
 
@@ -24,6 +26,13 @@ require("dotenv").config();
     app.use(flash());
 
 
+    // Session
+    app.use(session({
+        secret: 'blogapp',
+        resave: true,
+        saveUninitialized: true
+    }))
+
     // Middleware
     app.use((req, res, next) => {
         // res.locals used to create global variables
@@ -33,19 +42,19 @@ require("dotenv").config();
     });
 
 
-    // JSON CONFIG IN MIDDLEWARES
-    app.use(
-        express.urlencoded({
-            extended: true
-        })
-    )
-    app.use(express.json());
 
 
 
-    // ENGINE EJS
+    // Body Parser
+    app.use(bodyParser.urlencoded({extended: true}));
+    app.use(bodyParser.json());
+
+
+
+    // ENGINE HANDLEBARS
+    app.engine('handlebars', handlebars.engine({defaultLayout: 'main'}));
     app.set('views', __dirname + '/views')
-    app.set('view engine', 'ejs');
+    app.set('view engine', 'handlebars');
 
 
 
@@ -61,12 +70,12 @@ require("dotenv").config();
 
 
 
-router.get("/", cors(), (req, res) => {
-    res.render("pages/index");
+router.get("/", (req, res) => {
+    res.render("index");
 })
 
 router.get("/painel", cors(), (req, res) => {
-    res.render("pages/painel");
+    res.render("painel");
 });
 
 

@@ -1,0 +1,39 @@
+<article class="post">
+    <h2 class="title">Pagamentos</h2>
+    <a href="/novo-pagamento" class="btn">Novo Pagamento</a>
+    <table class="pagamentos">
+        <thead>
+            <tr>
+                <th>Matrícula</th>
+                <th>Nome</th>
+                <th>Orçamento</th>
+                <th>Nº Parcelas</th>
+                <th>Valor Parc.</th>
+                <th>Pago</th>
+                <th>Data Pagamento</th>
+                <th>Clínica</th>
+                <th>Data Início</th>
+                <th>Atualizar</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {{#each data}}
+                <tr id={{id}}>
+                    <td>{{matricula}}</td>
+                    <td>{{nome}}</td>
+                    <td>{{valor_total}}</td>
+                    <td>{{qtd_parcelas}}</td>
+                    <td>R${{valor_parcela}}</td>
+                    <td>{{pago}}</td>
+                    <td>{{data_pagamento}}</td>
+                    <td>{{clinica}}</td>
+                    <td>{{data_inicio}}</td>
+                    <td class="td-anchor"><a href="/parcelamentos/atualizar" class="btn fa fa-edit table-anchor"></a></td>
+                </tr>
+            {{else}}
+                <h3>Nenhum encontrado</h3>
+            {{/each}}
+        </tbody>
+    </table>
+</article>

@@ -1,0 +1,31 @@
+<article class="post">
+    <h2 class="title">Usuários</h2>
+    <a href="/usuarios/cadastrar" class="btn">Cadastrar Usuário</a>
+    <table class="usuarios">
+        <thead>
+            <tr>
+                <th>Matrícula</th>
+                <th>Nome</th>
+                <th>Aposentado</th>
+                <th>Data de Cadastro</th>
+                <th>Atualizar</th>
+                <th>Mais detalhes</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {{#each usuarios}}
+                <tr>
+                    <td>{{matricula}}</td>
+                    <td>{{nome}}</td>
+                    <td>{{aposentado}}</td>
+                    <td>{{data_cadastro}}</td>
+                    <td class="td-anchor"><a href="/usuarios/atualizar" class="btn fa fa-edit table-anchor"></a></td>
+                    <td class="td-anchor"><a href="/usuarios/consultar/{{id}}" class="btn fa fa-angle-double-right table-anchor"></a></td>
+                </tr>
+                {{else}}
+                <h3>Nenhum encontrado</h3>
+            {{/each}}
+        </tbody>
+    </table>
+</article>

@@ -1,0 +1,43 @@
+<article class="post">
+    <h2 class="title">Parcelamentos</h2>
+    <a href="/parcelamentos/cadastrar" class="btn">Novo Parcelamento</a>
+    <table class="parcelamentos">
+        <thead>
+            <tr>
+                <th>Matrícula</th>
+                <th>Nome</th>
+                <th>Orçamento</th>
+                <th>Nº Parcelas</th>
+                <th>Parc. Pagas</th>
+                <th>Data Início</th>
+                <th>Clínica</th>
+                <th>Aposentado</th>
+                <th>Valor Parc.</th>
+                <th>Atualizar</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {{#each data}}
+                <tr id={{id}}>
+                    <td>{{matricula}}</td>
+                    <td class="nome">{{nome}}</td>
+                    <td>R$ {{valor_total}}</td>
+                    <td>{{qtd_parcelas}}X</td>
+                    <td>{{qtd_parcelas_pagas}}</td>
+                    <td>{{data_inicio}}</td>
+                    <td>{{clinica}}</td>
+                    <td>{{aposentado}}</td>
+                    <td class="valor-parcela">R$ {{valor_parcela}}</td>
+                    <td class="td-anchor"><a href="/parcelamentos/atualizar" class="btn fa fa-edit table-anchor"></a></td>
+                </tr>
+                {{else}}
+                <h3>Nenhum encontrado</h3>
+            {{/each}}
+            <tr class="total-row">
+                <td colspan="8">Total =</td>
+                <td class="total-price" colspan="1">R$ {{totalPrice}}</td>
+            </tr>
+        </tbody>
+    </table>
+</article>
