@@ -12,17 +12,24 @@ const HOST_NAME = process.env.HOST_NAME;
 
 // CREATE
 router.post("/", async (req, res) => {})
+
 router.post("/cadastrar-usuario", async (req, res) => {
     const errors = [];
     const regex = /[0-9]/;
     const alphabeth = /[A-z]/;
 
 
+    if(!(typeof req.body.matricula == undefined || req.body.matricula == null || req.body.matricula == "")){
+        if(!regex.test(req.body.matricula) && !req.body.matricula == ""){
+            errors.push({text: "A matrícula deve conter apenas números"})
+        }
+    }
+
     if(typeof req.body.nome == undefined || req.body.nome == null || req.body.nome == ""){
         errors.push({text: "Preencha o nome"})
     }
     if(req.body.nome.length < 7){
-        errors.push({text: "O nome digitado é muito pequeno."})
+        errors.push({text: "O nome digitado é muito pequeno"})
     }
     if(!alphabeth.test(req.body.nome) || regex.test(req.body.nome)){
         errors.push({text: "O nome não pode conter números ou caracteres especiais"})
@@ -34,6 +41,95 @@ router.post("/cadastrar-usuario", async (req, res) => {
 
     if(typeof req.body.sexo == undefined || req.body.sexo == null | req.body.sexo == ""){
         errors.push({text: "Selecione o sexo"})
+    }
+
+    if(!(typeof req.body.orgaoEmissor == 'string' || req.body.orgaoEmissor == undefined || req.body.orgaoEmissor == null)){
+        if(!alphabeth.test(req.body.orgaoEmissor)){
+            errors.push({text: "Orgão emissor deve conter apenas letras"})
+        }
+    }
+
+
+
+    if(!regex.test(req.body.cartaoSUS) && !req.body.cartaoSUS == ""){
+        errors.push({text: "O cartão SUS deve conter apenas números"})
+    }
+
+    if(!(req.body.bairro == "" || typeof req.body.bairro == undefined || req.body.bairro == null)){
+        if(!(alphabeth.test(req.body.bairro) && regex.test(req.body.bairro))){
+            errors.push({text: "O bairro não deve conter caracteres especiais"})
+        }
+    }
+
+
+    if(!(typeof req.body.numeroEnd == "string" || req.body.numeroEnd == undefined || req.body.numeroEnd == null)){
+        if(!regex.test(req.body.numeroEnd)){
+            errors.push({text: "Somente números são permitidos para o número do endereço"})
+        }
+    }
+
+
+    if(errors.length > 0){
+        res.render("pages/usuarios/novo-usuario", {errors})
+    } else{
+        const year = new Date().getFullYear();
+        const month = new Date().getMonth() + 1;
+        const day = new Date().getDate();
+
+        const date = `${year}-${month}-${day}`;
+
+        const newUser = {
+            matricula: req.body.matricula,
+            nome: req.body.nome,
+            identidade: req.body.identidade,
+            dataExp: req.body.dataExp,
+            orgaoEmissor: req.body.orgaoEmissor,
+            cpf: req.body.cpf,
+            sexo: req.body.sexo,
+            estadoCivil: req.body.estadoCivil,
+            dataNasc: req.body.dataNasc,
+            cartaoSUS: req.body.cartaoSUS,
+            endereco: req.body.endereco,
+            numeroEnd: req.body.numeroEnd,
+            bairro: req.body.bairro,
+            cidade: req.body.cidade,
+            nomeMae: req.body.nomeMae,
+            nomePai: req.body.nomePai,
+            dataCadastro: date,
+            aposentado: req.body.aposentado
+        }
+
+        console.log(newUser)
+
+        
+
+        const con = mysql.createConnection({
+            host: HOST_NAME,
+            database: DB_NAME,
+            user: DB_USER,
+            password: DB_PASSWORD
+        });
+
+        con.connect((error) => {
+            if(error){
+                throw error
+            } else{
+                const insertObject = `INSERT INTO USUARIOS VALUES (DEFAULT, ${newUser.matricula}, ${newUser.nome}, ${newUser.identidade}, ${newUser.dataExp}, ${newUser.orgaoEmissor}, ${newUser.cpf}, ${newUser.sexo}, ${newUser.estadoCivil}, ${newUser.dataNasc}, ${newUser.cartaoSUS}, ${newUser.endereco}, ${newUser.numeroEnd}, ${newUser.bairro}, ${newUser.cidade}, ${newUser.nomePai}, ${newUser.nomeMae}, ${newUser.dataCadastro}, ${newUser.aposentado})`
+
+                con.query(insertObject, function (error, result) {
+                    if(error){
+                        req.flash("error_msg", "Não foi possível cadastrar o novo usuário no sistema: " + error);
+                        res.redirect("/usuarios/cadastrar-usuario")
+                    } else {
+                        req.flash("success_msg", "Usuário cadastrado com sucesso!");
+                        res.redirect("/usuarios");
+                    };
+                    con.end();
+                });
+            };
+        });
+        
+        
     }
 
 

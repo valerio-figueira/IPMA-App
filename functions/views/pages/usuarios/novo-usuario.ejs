@@ -9,7 +9,9 @@
             <article class="post">
                 <h2 class="title">Cadastrar Usuário</h2>
 
-                <form action="/cadastrar-usuario">
+                <%- include('../../partials/msg') %>
+
+                <form action="/usuarios/cadastrar-usuario" method="POST" class="form-cadastro">
                     <fieldset>
                         <legend>Novo Titular</legend>
 
@@ -30,12 +32,12 @@
 
                         <div class="box">
                             <label for="data-exp">Data de Expedição:</label>
-                            <input type="date" id="data-exp" name="data-exp">
+                            <input type="date" id="data-exp" name="dataExp">
                         </div>
 
                         <div class="box">
                             <label for="emissor">Órgão Emissor:</label>
-                            <input type="text" id="emissor" name="emissor">
+                            <input type="text" id="emissor" name="orgaoEmissor">
                         </div>
 
                         <div class="box">
@@ -79,7 +81,7 @@
                         </div>
 
                         <div class="box">
-                            <label for="numero">Nº:</label>
+                            <label for="numero">Nº endereço:</label>
                             <input type="number" id="numero" name="numeroEnd">
                         </div>
 
@@ -101,6 +103,15 @@
                         <div class="box">
                             <label for="nome-pai">Nome do pai:</label>
                             <input type="text" id="nome-pai" name="nomePai">
+                        </div>
+
+                        <div class="box">
+                            <label for="aposentado">Aposentado:</label>
+                            <select name="aposentado" id="aposentado">
+                                <option value="">Selecione</option>
+                                <option value="1">Sim</option>
+                                <option value="0">Não</option>
+                            </select>
                         </div>
 
                     </fieldset>
