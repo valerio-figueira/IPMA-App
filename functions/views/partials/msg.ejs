@@ -1,0 +1,15 @@
+<% if (typeof error_msg == 'string') { %>
+    <p class="error-msg"><%= error_msg %></p>
+<% } %>
+
+<% if (typeof success_msg == 'string') { %>
+    <p class="success-msg"><%= success_msg %></p>
+<% } %>
+
+
+<% if (typeof errors == 'object') { %>
+    <% errors.forEach(function(error){ %>
+        <p class="error-msg"><%= error %></p>
+    <% }); %>
+<% } %>
+

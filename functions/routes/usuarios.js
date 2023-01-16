@@ -13,6 +13,30 @@ const HOST_NAME = process.env.HOST_NAME;
 // CREATE
 router.post("/", async (req, res) => {})
 router.post("/cadastrar-usuario", async (req, res) => {
+    const errors = [];
+    const regex = /[0-9]/;
+    const alphabeth = /[A-z]/;
+
+
+    if(typeof req.body.nome == undefined || req.body.nome == null || req.body.nome == ""){
+        errors.push({text: "Preencha o nome"})
+    }
+    if(req.body.nome.length < 7){
+        errors.push({text: "O nome digitado é muito pequeno."})
+    }
+    if(!alphabeth.test(req.body.nome) || regex.test(req.body.nome)){
+        errors.push({text: "O nome não pode conter números ou caracteres especiais"})
+    }
+
+    if(typeof req.body.cpf == undefined || req.body.cpf == null || req.body.cpf == ""){
+        errors.push({text: "Preencha o CPF"})
+    }
+
+    if(typeof req.body.sexo == undefined || req.body.sexo == null | req.body.sexo == ""){
+        errors.push({text: "Selecione o sexo"})
+    }
+
+
 
 })
 router.post("/cadastrar-dependente", async (req, res) => {
@@ -46,10 +70,10 @@ router.get("/", async (req, res) => {
                 if(error){
                     throw error;
                 } else{
-                    const data = result;
-                    console.log(data)
+                    const usuarios = result;
+                    console.log(usuarios)
 
-                    data.forEach(select => {
+                    usuarios.forEach(select => {
                       
                       // CONVERT BOOLEAN NUMBER TO STRING
                       if(select.aposentado == 1){
@@ -59,9 +83,10 @@ router.get("/", async (req, res) => {
                       }
 
                     })
+                    const errors = ["Error-01", "Error-02", "Error-03"];
 
                     con.end();
-                    res.render("pages/usuarios/listar-usuarios", {data});
+                    res.render("pages/usuarios/listar-usuarios", {usuarios, success_msg: "Usuário cadastrado!"});
                 };
             });
         };
@@ -86,27 +111,27 @@ router.get("/consultar/:id", async (req, res) => {
                 if(error){
                     throw error;
                 } else{
-                    const userDetails = result[0];
+                    const usuario = result[0];
                     
 
                     // CONVERT BOOLEAN NUMBER TO STRING
-                    if(userDetails.aposentado == 1){
-                        userDetails.aposentado = "Sim";
+                    if(usuario.aposentado == 1){
+                        usuario.aposentado = "Sim";
                     } else{
-                        userDetails.aposentado = "Não";
+                        usuario.aposentado = "Não";
                     }
 
                     // INSERTING DOTS AND DASH INTO CPF NUMBERS
-                    const cpf = userDetails.cpf.split("");
+                    const cpf = usuario.cpf.split("");
                     cpf.splice(3, 0, ".");
                     cpf.splice(7, 0, ".");
                     cpf.splice(11, 0, "-");
-                    userDetails.cpf = cpf.join("");
+                    usuario.cpf = cpf.join("");
 
-                    console.log(userDetails)
+                    console.log(usuario)
 
                     con.end();
-                    res.render("pages/usuarios/detalhes-usuario", {userDetails});
+                    res.render("pages/usuarios/detalhes-usuario", {userDetails: usuario});
                 };
             });
         };

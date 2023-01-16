@@ -354,6 +354,29 @@ form button.btn{
 
 
 
+.error-msg{
+    display: block;
+    width: fit-content;
+    padding: .5rem 1rem;
+    color: #942e2e;
+    background-color: #ffadad;
+    border-radius: 7px;
+    margin: .5rem 0;
+}
+.success-msg{
+    display: block;
+    width: fit-content;
+    padding: .5rem 1rem;
+    color: #38942e;
+    background-color: #b5ffad;
+    border-radius: 7px;
+    margin: .5rem 0;
+}
+
+
+
+
+
 footer{
     margin-top: 2rem;
     padding: 5rem 7%;
