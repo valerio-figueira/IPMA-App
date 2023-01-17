@@ -13,3 +13,11 @@
     <% }); %>
 <% } %>
 
+
+<% if ( success_msg.length > 0 ) { %>
+    <p><%= success_msg %></p>
+<% } %>
+
+<% if ( error_msg.length > 0 ) { %>
+    <p><%= error_msg %></p>
+<% } %>

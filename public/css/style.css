@@ -130,19 +130,24 @@ header.container .picture-box a{
 header.container .picture-box{
     display: flex;
     align-items: center;
-    gap: .3rem;
+    gap: .7rem;
 
 }
 header.container .picture-box img{
     display: flex;
     align-items: center;
+    justify-content: center;
     width: 55px;
     height: 50px;
     background: #ffffff99;
     padding: .3rem;
     border-radius: 5px;
 }
-
+header.container .anchor-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
 
 /* NAVBAR */
 nav.navbar{

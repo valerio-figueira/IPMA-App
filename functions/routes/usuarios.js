@@ -72,11 +72,33 @@ router.post("/cadastrar-usuario", async (req, res) => {
     if(errors.length > 0){
         res.render("pages/usuarios/novo-usuario", {errors})
     } else{
-        const year = new Date().getFullYear();
-        const month = new Date().getMonth() + 1;
-        const day = new Date().getDate();
 
-        const date = `${year}-${month}-${day}`;
+        if(req.body.sexo.match("Feminino")){
+            if(req.body.estadoCivil){
+                // UPDATE FIRST AND LAST LETTER OF 'ESTADOCIVIL'
+                const array = req.body.estadoCivil.split("");
+                array.pop();
+                array.push("a");
+                const letter = array.shift();
+                array.unshift(letter.toUpperCase());
+                req.body.estadoCivil = array.toString().replaceAll(",", "");
+            }
+        } else if(req.body.sexo.match("Masculino")){
+            if(req.body.estadoCivil){
+                // UPDATE FIRST LETTER OF 'ESTADOCIVIL'
+                const array = req.body.estadoCivil.split("");
+                const letter = array.shift();
+                array.unshift(letter.toUpperCase());
+                req.body.estadoCivil = array.toString().replaceAll(",", "");
+            }
+        }
+
+        
+        const dataDeCadastro = new Date().toLocaleDateString().toString().replaceAll("/", "-");
+        new Date(dataDeCadastro).toISOString()
+
+        console.log(dataDeCadastro)
+
 
         const newUser = {
             matricula: req.body.matricula,
@@ -95,11 +117,12 @@ router.post("/cadastrar-usuario", async (req, res) => {
             cidade: req.body.cidade,
             nomeMae: req.body.nomeMae,
             nomePai: req.body.nomePai,
-            dataCadastro: date,
+            dataCadastro: new Date(Date.now()).toISOString(),
             aposentado: req.body.aposentado
         }
 
-        console.log(newUser)
+        console.log(newUser);
+        
 
         
 
@@ -114,9 +137,9 @@ router.post("/cadastrar-usuario", async (req, res) => {
             if(error){
                 throw error
             } else{
-                const insertObject = `INSERT INTO USUARIOS VALUES (DEFAULT, ${newUser.matricula}, ${newUser.nome}, ${newUser.identidade}, ${newUser.dataExp}, ${newUser.orgaoEmissor}, ${newUser.cpf}, ${newUser.sexo}, ${newUser.estadoCivil}, ${newUser.dataNasc}, ${newUser.cartaoSUS}, ${newUser.endereco}, ${newUser.numeroEnd}, ${newUser.bairro}, ${newUser.cidade}, ${newUser.nomePai}, ${newUser.nomeMae}, ${newUser.dataCadastro}, ${newUser.aposentado})`
+                const userData = `INSERT INTO USUARIOS VALUES ('DEFAULT', '${newUser.matricula}', '${newUser.nome}', '${newUser.identidade}', '${newUser.dataExp}', '${newUser.orgaoEmissor}', '${newUser.cpf}', '${newUser.sexo}', '${newUser.estadoCivil}', '${newUser.dataNasc}', '${newUser.cartaoSUS}', '${newUser.endereco}', '${newUser.numeroEnd}', '${newUser.bairro}', '${newUser.cidade}', '${newUser.nomePai}', '${newUser.nomeMae}', '${newUser.dataCadastro}', '${newUser.aposentado}')`;
 
-                con.query(insertObject, function (error, result) {
+                con.query(userData, function (error, result) {
                     if(error){
                         req.flash("error_msg", "Não foi possível cadastrar o novo usuário no sistema: " + error);
                         res.redirect("/usuarios/cadastrar-usuario")
@@ -137,15 +160,19 @@ router.post("/cadastrar-usuario", async (req, res) => {
 })
 router.post("/cadastrar-dependente", async (req, res) => {
     
-})
+});
 
 // FORM TO CREATE NEW
 router.get("/cadastrar-usuario", async (req, res) => {
-    res.render("pages/usuarios/novo-usuario")
-})
+    res.render("pages/usuarios/novo-usuario", {
+        success_msg: req.flash('success_msg'),
+        error_msg: req.flash('error_msg')
+    });
+});
+
 router.get("/cadastrar-dependente", async (req, res) => {
     res.render("pages/dependentes/novo-dependente")
-})
+});
 
 
 
@@ -169,25 +196,36 @@ router.get("/", async (req, res) => {
                     const usuarios = result;
                     console.log(usuarios)
 
-                    usuarios.forEach(select => {
+                    usuarios.forEach(usuario => {
                       
                       // CONVERT BOOLEAN NUMBER TO STRING
-                      if(select.aposentado == 1){
-                        select.aposentado = "Sim";
+                      if(usuario.aposentado == 1){
+                        usuario.aposentado = "Sim";
                       } else{
-                        select.aposentado = "Não";
+                        usuario.aposentado = "Não";
                       }
 
+                      usuario.data_cadastro = new Date(usuario.data_cadastro)
+                      .toLocaleDateString();
+
                     })
-                    const errors = ["Error-01", "Error-02", "Error-03"];
+
+                    console.log(res.locals.success_msg)
+                    console.log(req.flash("success_msg", null))
+                    console.log(req.flash("success_msg"))
+
 
                     con.end();
-                    res.render("pages/usuarios/listar-usuarios", {usuarios, success_msg: "Usuário cadastrado!"});
+                    res.render("pages/usuarios/listar-usuarios", {
+                        success_msg: res.locals.success_msg,
+                        error_msg: res.locals.error_msg,
+                        usuarios
+                    });
                 };
             });
         };
     });
-})
+});
 
 
 // READ ONLY

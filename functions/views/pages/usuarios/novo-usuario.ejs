@@ -45,14 +45,14 @@
                             <input type="text" id="cpf" name="cpf" required>
                         </div>
 
-                        <div class="sexo box">
-                            <p>Sexo: </p>
-                            <div class="input-container">
-                                <label for="masculino">M</label>
-                                <input type="radio" id="masculino" name="sexo" value="M">
-                                <label for="feminino">F</label>
-                                <input type="radio" id="feminino" name="sexo" value="F">
-                            </div>
+                        <div class="box">
+                            <label for="sexo">Sexo:</label>
+                            <select name="sexo" id="sexo">
+                                <option value="">Selecione</option>
+                                <option value="Masculino">Masculino</option>
+                                <option value="Feminino">Feminino</option>
+                                <option value="Outro">Outro</option>
+                            </select>
                         </div>
 
                         <div class="box">
@@ -62,6 +62,7 @@
                                 <option value="solteiro">Solteiro(a)</option>
                                 <option value="casado">Casado(a)</option>
                                 <option value="viuvo">Viúvo(a)</option>
+                                <option value="divorciado">Divorciado(a)</option>
                             </select>
                         </div>
 

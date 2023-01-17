@@ -7,6 +7,7 @@ const Usuarios = require("./routes/usuarios");
 const Parcelamentos = require("./routes/parcelamentos");
 const flash = require("connect-flash");
 const session = require("express-session");
+var bodyParser = require('body-parser');
 require("dotenv").config();
 
 
@@ -23,7 +24,7 @@ require("dotenv").config();
 
     // Session
     app.use(session({
-        secret: 'blogapp',
+        secret: 'ipmaserver',
         resave: true,
         saveUninitialized: true
     }))
@@ -41,12 +42,9 @@ require("dotenv").config();
 
 
     // JSON CONFIG IN MIDDLEWARES
-    app.use(
-        express.urlencoded({
-            extended: true
-        })
-    )
-    app.use(express.json());
+    // Body Parser
+    app.use(bodyParser.urlencoded({extended: true}));
+    app.use(bodyParser.json());
 
 
 
