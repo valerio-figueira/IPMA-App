@@ -93,6 +93,14 @@ router.post("/cadastrar-usuario", async (req, res) => {
             }
         }
 
+        // REMOVING DASH AND DOTS FROM CPF INPUT
+        const cpf = req.body.cpf;
+
+        console.log(
+            req.body.cpf.replaceAll(".", ""),
+            req.body.cpf.replace("-", "")
+        )
+
         
         const dataDeCadastro = new Date().toLocaleDateString().toString().replaceAll("/", "-");
         new Date(dataDeCadastro).toISOString()
