@@ -1,21 +1,46 @@
 <header class="container">
-    <div class="picture-box">
-        <a href="/">
-            <img src="/imgs/brasão.png" alt="brasão">
+    <div class="container">
+        <a href="/" target="_self">
+            <img src="/imgs/brasão.png" alt="brasão" class="brasão">
         </a>
-        <div class="anchor-container">
-            <a href="/">
+        <div class="title-container">
+            <a href="/" target="_self">
                 <h1 class="main-title">IPMA</h1>
             </a>
-            <a href="/">
-                <small>Application Server</small>
+            <a href="/" target="_self">
+                <p class="subtitle">Application Server</p>
             </a>
         </div>
     </div>
-
+    
     <nav class="navbar">
-        <a href="/">Home</a>
-        <a href="/painel">Painel</a>
-        <a href="/sobre">Sobre</a>
+        <a href="/" class="fa fa-home" id="home"></a>
+        <div class="dropdown">
+            <div class="dropbtn">Consulta
+                <div class="arrow">&#9698;</div>
+            </div>
+            <div class="dropdown-content">
+                <a href="/usuarios">Consultar Usuários</a>
+                <a href="/parcelamentos">Consultar Parcelamentos</a>
+                <a href="/parcelamentos/pagamentos">Consultar Pagamentos</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <div class="dropbtn">Cadastro
+                <div class="arrow">&#9698;</div>
+                </div>
+                <div class="dropdown-content">
+                    <a href="/usuarios/cadastrar-usuario">Novo Usuário</a>
+                    <a href="/parcelamentos/cadastrar">Novo Parcelamento</a>
+                    <a href="/pagamentos">Novo Pagamento</a>
+                    <a href="#">Novo Dependente</a>
+                </div>
+            </div>
+        <a href="#contato">Contato</a>
+        <a href="#sobre">Sobre</a>
+    
+        <button class="close-nav">&times;</button>
     </nav>
+    
+    <a id="mobile" class="fa fa-bars"></a>
 </header>

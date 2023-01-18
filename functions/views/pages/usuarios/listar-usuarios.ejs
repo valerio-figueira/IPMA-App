@@ -8,7 +8,12 @@
         <section class="main-column">
             <article class="post">
                 <h2 class="title">Usuários</h2>
-                <a href="/usuarios/cadastrar-usuario" class="btn">Cadastrar Usuário</a>
+
+                <form action="/usuarios/buscar" method="GET" class="search-form">
+                    <label for="search">Buscar Usuário:</label>
+                    <input type="text" id="search" name="nome">
+                    <button type="submit" class="btn">Pesquisar</button>
+                </form>
 
                 <%- include('../../partials/msg') %>
                 
@@ -20,6 +25,7 @@
                             <th>Aposentado</th>
                             <th>Data de Cadastro</th>
                             <th>Atualizar</th>
+                            <th>Novo Dependente</th>
                             <th>Mais detalhes</th>
                         </tr>
                     </thead>
@@ -32,7 +38,8 @@
                                 <td><%= usuario.aposentado %></td>
                                 <td><%= usuario.data_cadastro %></td>
                                 <td class="td-anchor"><a href="/usuarios/atualizar" class="btn fa fa-edit table-anchor"></a></td>
-                                <td class="td-anchor"><a href="/usuarios/consultar/<%= usuario.id %>" class="btn fa fa-angle-double-right table-anchor"></a></td>
+                                <td class="td-anchor"><a href="#" class="btn fa fa-user-plus"></a></td>
+                                <td class="td-anchor"><a href="/usuarios/consultar/<%= usuario.id %>" class="btn fa fa-address-card-o"></a></td>
                             </tr>
                         <% }); %>
                     </tbody>

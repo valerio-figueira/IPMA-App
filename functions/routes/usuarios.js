@@ -280,6 +280,44 @@ router.get("/consultar/:id", async (req, res) => {
     });
 })
 
+router.get("/buscar", async (req, res) => {
+    const con = mysql.createConnection({
+        host: HOST_NAME,
+        database: DB_NAME,
+        user: DB_USER,
+        password: DB_PASSWORD
+    });
+
+    con.connect((error) => {
+        if(error){
+            throw error
+        } else{
+            con.query(`SELECT * FROM USUARIOS WHERE nome LIKE '${req.query.nome}%'`, (error, result, fields) => {
+                if(error){
+                    throw error;
+                } else{
+                    const usuarios = result;
+                    
+
+                    // CONVERT BOOLEAN NUMBER TO STRING
+                    usuarios.forEach(usuario => {
+                        if(usuario.aposentado == 1){
+                            usuario.aposentado = "Sim";
+                        } else{
+                            usuario.aposentado = "Não";
+                        }
+                    })
+
+                    console.log(usuarios)
+
+                    con.end();
+                    res.render("pages/usuarios/listar-usuarios", {usuarios});
+                };
+            });
+        };
+    });
+})
+
 
 
 // UPDATE

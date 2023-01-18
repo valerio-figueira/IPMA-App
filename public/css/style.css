@@ -79,15 +79,15 @@ body{
 
 
 /* GLOBAL CSS */
-h2{
+main h2{
     font-size: 1.8rem;
     color: var(--dark-gray);
 }
-h3{
+main h3{
     color: var(--light-gray);
     margin: 1rem 0;
 }
-p{
+main p{
     font-size: 1.3rem;
     margin: 1.5rem 0;
 }
@@ -107,56 +107,158 @@ a.btn:hover, button.btn:hover{
 }
 
 
-/* HEADER */
-header.container{
+
+
+
+
+/* HEADER CSS */
+header{
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+    flex-flow: row-reverse;
+    background: var(--dark-gray);
+
+    padding: 0 6%;
+}
+header .container{
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
     align-items: center;
-    flex-flow: row-reverse;
-
-    padding: .5rem 7%;
-
-    background-color: var(--dark-gray);
-}
-header.container a{
-    color: var(--light-gray);
-}
-header.container .picture-box a{
-    color: var(--light-green);
-}
-
-/* HEADER IMG */
-header.container .picture-box{
-    display: flex;
-    align-items: center;
-    gap: .7rem;
-
-}
-header.container .picture-box img{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 55px;
-    height: 50px;
-    background: #ffffff99;
-    padding: .3rem;
-    border-radius: 5px;
-}
-header.container .anchor-container{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-/* NAVBAR */
-nav.navbar{
-    display: flex;
     gap: 1rem;
 }
-nav.navbar a:hover{
+header .title-container{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+header .title-container .subtitle{
+    font-size: .8rem;
+    color: var(--sooth-gray);
+}
+header img.brasão{
+    display: flex;
+    align-items: center;
+    background-color: #ffffff99;
+    padding: .3rem;
+
+    width: 55px;
+    height: 50px;
+
+    border-radius: 8px;
+}
+
+/* COLOR OF THE LINKS INSIDE HEADER */
+header a{
+    color: var(--gray-color);
+    color: var(--light-gray);
+}
+header a:hover{
+    color: var(--light-green);  
+}
+header .title-container h1{
     color: var(--light-green);
 }
+header .title-container *:hover{
+    color: var(--light-green);
+}
+
+header #mobile{
+    display: none;
+}
+
+
+
+
+
+
+
+
+
+/* NAVBAR CSS */
+nav.navbar{
+    display: flex;
+    gap: 1.5rem;
+}
+nav.navbar a{
+    display: flex;
+    align-items: center;
+    font-size: 1.1rem;
+
+    height: 65px;
+}
+nav.navbar #home{
+    font-size: 1.5rem;
+}
+nav.navbar #login{
+    display: none;
+}
+nav.navbar #transparencia{
+    display: none;
+}
+nav.navbar .close-nav{
+    display: none;
+}
+
+/* ACTIVE STATUS IN NAVBAR */
+nav.navbar a.active{
+    color: var(--light-green);
+}
+nav.navbar .dropdown .dropbtn.active{
+    color: var(--light-green);
+}
+nav.navbar .dropdown .dropdown-content a.active{
+    background-color: var(--active-color);
+}
+
+/* NAVBAR DROPDOWN */
+nav.navbar .dropdown{
+    display: flex;
+    align-items: center;
+}
+nav.navbar .dropdown .dropbtn{
+    display: flex;
+    gap: .2rem;
+    color: var(--light-gray);
+    font-size: 1.1rem;
+}
+nav.navbar .dropdown .dropbtn:hover{
+    color: var(--light-green);
+}
+nav.navbar .dropdown .arrow{
+    transform: rotate(45deg);
+    font-size: .6rem;
+}
+nav.navbar .dropdown .dropdown-content{
+    display: none;
+}
+header{
+    position: relative;
+}
+nav.navbar .dropdown:hover .dropdown-content{
+    display: flex;
+    flex-direction: column;
+
+    background-color: #303842;
+    
+    position: absolute;
+    top: 100%;
+    z-index: 1000;
+}
+nav.navbar .dropdown .dropdown-content a{
+    height: initial;
+    padding: 1.5rem;
+}
+nav.navbar .dropdown .dropdown-content a:hover{
+    background-color: var(--nav-dropdown-hover);
+}
+nav.navbar .dropdown:hover .dropbtn {
+    color: var(--light-green);
+}
+
+
+
+
 
 
 
@@ -373,6 +475,34 @@ form button.btn{
 
 
 
+/* SEARCH BAR */
+form.search-form{
+    display: flex;
+    align-items: center;
+    gap: .3rem;
+    margin: 1.5rem 0;
+    padding: 0;
+}
+form.search-form label{
+    color: var(--font-color);
+    font-size: 1.3rem;
+}
+form.search-form input{
+    color: var(--font-color);
+    font-size: 1.3rem;
+    padding: .5rem;
+    width: 250px;
+    outline: 3px solid transparent;
+}
+form.search-form input:focus{
+    outline: 3px solid var(--light-green);
+}
+form.search-form button.btn{
+    margin: 0 .5rem;
+}
+
+
+
 
 .error-msg{
     display: block;
@@ -423,4 +553,128 @@ footer .copyright{
     fieldset select{
         font-size: 1rem;
     }
+}
+
+
+
+
+
+
+
+
+
+@media screen and (max-width: 1350px) {
+    nav.navbar{
+        gap: 1rem;
+    }
+    nav.navbar a, nav.navbar .dropdown .dropbtn{
+        font-size: 1rem;
+    }
+}
+
+
+@media screen and (max-width: 1160px) {
+
+    /* MOBILE NAV */
+    nav.navbar #login{
+        display: flex;
+    }
+    nav.navbar #transparencia{
+        display: flex;
+    }
+
+    nav.navbar{
+        display: none;
+        box-shadow: 0px 0px 10px 2px #00000074;
+    }
+    header #mobile{
+        display: flex;
+        align-items: center;
+        font-size: 1.8rem;
+        cursor: pointer;
+        height: 90px;
+    }
+
+    nav.navbar.responsive {
+        position: fixed;
+        z-index: 1001;
+        top: 0; bottom: 0; right: 0;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0;
+
+        background-color: var(--dark-gray);
+        padding: 6rem 0;
+
+        transform: translateX(0);
+    }
+    nav.navbar.responsive #home{
+        font-size: 1.5rem;
+    }
+    nav.navbar.responsive a{
+        display: flex;
+        justify-content: center;
+
+        font-size: 1.1rem;
+        height: auto;
+        width: 17rem;
+        padding: .7rem 2rem;
+    }
+    nav.navbar.responsive a:hover{
+        background-color: var(--navbar-hover);
+    }
+    nav.navbar.responsive .dropdown{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+    nav.navbar.responsive .dropdown:hover .dropdown-content{
+        position: initial;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        background-color: var(--nav-hover);
+    }
+    nav.navbar.responsive .dropdown .dropdown-content a{
+        display: flex;
+        justify-content: center;
+        align-items: stretch;
+        padding: .7rem 0;
+    }
+    nav.navbar.responsive .dropdown .dropbtn{
+        display: flex;
+        justify-content: center;
+
+        font-size: 1.1rem;
+        padding: .7rem 2rem;
+        width: 100%;
+    }
+    nav.navbar.responsive .dropdown .dropdown-content a:hover{
+        background-color: var(--nav-dropdown-content-hover);
+    }
+    nav.navbar.responsive .dropdown:hover .dropbtn{
+        background-color: var(--nav-dropdown-hover);
+    }
+    nav.navbar{
+        position: relative;
+    }
+    nav.navbar.responsive .close-nav{
+        display: block;
+
+        border: none;
+        background: transparent;
+        font-size: 3.5rem;
+
+        color: var(--light-gray);
+
+        position: absolute;
+        top: 0; left: 1.5rem;
+        cursor: pointer;
+    }
+    nav.navbar.responsive .close-nav:hover{
+        color: var(--light-green);
+    }
+
 }
