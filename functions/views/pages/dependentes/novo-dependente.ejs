@@ -4,23 +4,23 @@
 <body>
     <%- include('../../partials/header') %>
 
+
     <main class="container">
         <section class="main-column">
             <article class="post">
                 <h2 class="title">Informações do Usuário</h2>
-                <a href="/usuarios/cadastrar-dependente" class="btn">Novo Dependente</a>
-                <a href="#listar-dependentes" class="btn">Consultar Dependentes</a>
+                <div class="box">
+                    <h3>Titular:</h3>
+                    <p class="nome"></p>
+                    
+                </div>
 
                 <form action="/">
 
-                    <% if (userDetails) { %>
+                    <% if (typeof dependente == "object") { %>
                         <fieldset>
                             <legend>Titular</legend>
                             <input type="hidden" value="<%= userDetails.id %>" name="id" disabled>
-                            <div class="box">
-                                <label for="matricula">Matrícula:</label>
-                                <input type="number" id="matricula" name="matricula" value="<%= userDetails.matricula %>" disabled>
-                            </div>
     
                             <div class="box">
                                 <label for="nome">Nome:</label>
@@ -91,11 +91,6 @@
                                 <label for="nome-mae">Nome da mãe:</label>
                                 <input type="text" id="nome-mae" name="nomeMae" value="<%= userDetails.nome_mae %>" disabled>
                             </div>
-    
-                            <div class="box">
-                                <label for="nome-pai">Nome do pai:</label>
-                                <input type="text" id="nome-pai" name="nomePai" value="<%= userDetails.nome_pai %>" disabled>
-                            </div>
 
                             <div class="box">
                                 <label for="data-cadastro">Data de cadastro:</label>
@@ -113,6 +108,7 @@
         <%- include('../../partials/sidecolumn') %>
     </main>
 
-        <%- include('../../partials/footer') %>
+
+    <%- include('../../partials/footer') %>
 </body>
 </html>
