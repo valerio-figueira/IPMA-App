@@ -15,6 +15,17 @@
                     <button type="submit" class="btn">Pesquisar</button>
                 </form>
 
+                <form action="/usuarios/filtrar" method="GET" class="filtro">
+                    <label for="consulta">Filtrar Consulta:</label>
+                    <select name="tipo" id="consulta">
+                        <option value="">Selecione</option>
+                        <option value="todos">Todos</option>
+                        <option value="ativos">Ativos</option>
+                        <option value="aposentados">Aposentados</option>
+                    </select>
+                    <button class="btn" type="submit">Aplicar filtro</button>
+                </form>
+
                 <%- include('../../partials/msg') %>
                 
                 <table class="usuarios">
@@ -32,7 +43,8 @@
                     </thead>
 
                     <tbody>
-                        <% usuarios.forEach(function(usuario){ %>
+                        <% if (usuarios.length > 0) { %>
+                        <% usuarios.forEach(function(usuario) { %>
                             <tr>
                                 <td><%= usuario.matricula %></td>
                                 <td><%= usuario.nome %></td>
@@ -44,6 +56,7 @@
                                 <td class="td-anchor"><a href="/usuarios/consultar/<%= usuario.id %>" class="btn fa fa-address-card-o"></a></td>
                             </tr>
                         <% }); %>
+                        <% } %>
                     </tbody>
                 </table>
             </article>

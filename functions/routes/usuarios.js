@@ -17,6 +17,7 @@ router.post("/cadastrar-usuario", async (req, res) => {
     const errors = [];
     const regex = /[0-9]/;
     const alphabeth = /[A-z]/;
+    const alphnumeric = /[A-z-0-9]/;
 
 
     if(!(typeof req.body.matricula == undefined || req.body.matricula == null || req.body.matricula == "")){
@@ -28,7 +29,7 @@ router.post("/cadastrar-usuario", async (req, res) => {
     if(typeof req.body.nome == undefined || req.body.nome == null || req.body.nome == ""){
         errors.push({text: "Preencha o nome"})
     }
-    if(req.body.nome.length < 7){
+    if(req.body.nome.length < 10){
         errors.push({text: "O nome digitado é muito pequeno"})
     }
     if(!alphabeth.test(req.body.nome) || regex.test(req.body.nome)){
@@ -56,7 +57,7 @@ router.post("/cadastrar-usuario", async (req, res) => {
     }
 
     if(!(req.body.bairro == "" || typeof req.body.bairro == undefined || req.body.bairro == null)){
-        if(!(alphabeth.test(req.body.bairro) && regex.test(req.body.bairro))){
+        if(!(alphnumeric.test(req.body.bairro))){
             errors.push({text: "O bairro não deve conter caracteres especiais"})
         }
     }
@@ -93,19 +94,13 @@ router.post("/cadastrar-usuario", async (req, res) => {
             }
         }
 
+        if(req.body.numeroEnd == 0){
+            req.body.numeroEnd = null;
+        }
+
         // REMOVING DASH AND DOTS FROM CPF INPUT
-        const cpf = req.body.cpf;
-
-        console.log(
-            req.body.cpf.replaceAll(".", ""),
-            req.body.cpf.replace("-", "")
-        )
-
-        
-        const dataDeCadastro = new Date().toLocaleDateString().toString().replaceAll("/", "-");
-        new Date(dataDeCadastro).toISOString()
-
-        console.log(dataDeCadastro)
+        req.body.cpf = req.body.cpf.replaceAll(".", "");
+        req.body.cpf = req.body.cpf.replace("-", "");
 
 
         const newUser = {
@@ -149,11 +144,9 @@ router.post("/cadastrar-usuario", async (req, res) => {
 
                 con.query(userData, function (error, result) {
                     if(error){
-                        req.flash("error_msg", "Não foi possível cadastrar o novo usuário no sistema: " + error);
-                        res.redirect("/usuarios/cadastrar-usuario")
+                        res.render("pages/usuarios/novo-usuario", {error_msg: "Não foi possível cadastrar o novo usuário no sistema: " + error})
                     } else {
-                        req.flash("success_msg", "Usuário cadastrado com sucesso!");
-                        res.redirect("/usuarios");
+                        res.render("pages/usuarios/novo-usuario", {success_msg: "Usuário cadastrado com sucesso!"})
                     };
                     con.end();
                 });
@@ -172,10 +165,8 @@ router.post("/cadastrar-dependente", async (req, res) => {
 
 // FORM TO CREATE NEW
 router.get("/cadastrar-usuario", async (req, res) => {
-    res.render("pages/usuarios/novo-usuario", {
-        success_msg: req.flash('success_msg'),
-        error_msg: req.flash('error_msg')
-    });
+    console.log(req.flash("error_msg"), res.locals.error_msg)
+    res.render("pages/usuarios/novo-usuario");
 });
 
 router.get("/cadastrar-dependente", async (req, res) => {
@@ -215,17 +206,17 @@ router.get("/", async (req, res) => {
 
                       usuario.data_cadastro = new Date(usuario.data_cadastro)
                       .toLocaleDateString();
+                      usuario.data_nasc = new Date(usuario.data_nasc)
+                      .toLocaleDateString();
 
                     })
 
                     console.log(res.locals.success_msg)
-                    console.log(req.flash("success_msg", null))
-                    console.log(req.flash("success_msg"))
-
+                    console.log(req.flash("success"))
 
                     con.end();
                     res.render("pages/usuarios/listar-usuarios", {
-                        success_msg: res.locals.success_msg,
+                        success_msg: req.flash('success'),
                         error_msg: res.locals.error_msg,
                         usuarios
                     });
@@ -247,7 +238,7 @@ router.get("/consultar/:id", async (req, res) => {
 
     con.connect((error) => {
         if(error){
-            throw error
+            throw error;
         } else{
             con.query(`SELECT * FROM USUARIOS WHERE id=${req.params.id}`, (error, result, fields) => {
                 if(error){
@@ -263,6 +254,10 @@ router.get("/consultar/:id", async (req, res) => {
                         usuario.aposentado = "Não";
                     }
 
+                    usuario.data_nasc = new Date(usuario.data_nasc).toLocaleDateString();
+                    usuario.data_exp = new Date(usuario.data_exp).toLocaleDateString();
+                    usuario.data_cadastro = new Date(usuario.data_cadastro).toLocaleDateString();
+
                     // INSERTING DOTS AND DASH INTO CPF NUMBERS
                     const cpf = usuario.cpf.split("");
                     cpf.splice(3, 0, ".");
@@ -272,8 +267,32 @@ router.get("/consultar/:id", async (req, res) => {
 
                     console.log(usuario)
 
-                    con.end();
-                    res.render("pages/usuarios/detalhes-usuario", {userDetails: usuario});
+                    con.query(`SELECT * FROM DEPENDENTES WHERE id_titular=${req.params.id}`, (error, result, fields) => {
+                        if(error){
+                            throw error;
+                        } else{
+                            const dependentes = result;
+
+                            dependentes.forEach(dependente => {
+                                dependente.data_nasc = new Date(dependente.data_nasc).toLocaleDateString();
+                                dependente.data_exp = new Date(dependente.data_exp).toLocaleDateString();
+                                dependente.data_cadastro = new Date(dependente.data_cadastro).toLocaleDateString();
+                                dependente.data_exclusao = new Date(dependente.data_exclusao).toLocaleDateString();
+
+                                // INSERTING DOTS AND DASH INTO CPF NUMBERS
+                                const cpf = dependente.cpf.split("");
+                                cpf.splice(3, 0, ".");
+                                cpf.splice(7, 0, ".");
+                                cpf.splice(11, 0, "-");
+                                dependente.cpf = cpf.join("");
+                            })
+
+                            console.log(dependentes);
+
+                            con.end();
+                            res.render("pages/usuarios/detalhes-usuario", {userDetails: usuario, dependentes});
+                        }
+                    })
                 };
             });
         };
@@ -306,6 +325,11 @@ router.get("/buscar", async (req, res) => {
                         } else{
                             usuario.aposentado = "Não";
                         }
+
+                        usuario.data_cadastro = new Date(usuario.data_cadastro)
+                        .toLocaleDateString();
+                        usuario.data_nasc = new Date(usuario.data_nasc)
+                        .toLocaleDateString();
                     })
 
                     console.log(usuarios)

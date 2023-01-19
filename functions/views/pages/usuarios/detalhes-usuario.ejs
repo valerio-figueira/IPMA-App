@@ -13,7 +13,7 @@
 
                 <form action="/">
 
-                    <% if (userDetails) { %>
+                    <% if (typeof userDetails == 'object') { %>
                         <fieldset>
                             <legend>Titular</legend>
                             <input type="hidden" value="<%= userDetails.id %>" name="id" disabled>
@@ -34,7 +34,7 @@
     
                             <div class="box">
                                 <label for="data-exp">Data de Expedição:</label>
-                                <input type="date" id="data-exp" name="data-exp" value="<%= userDetails.data_exp %>" disabled>
+                                <input type="text" id="data-exp" name="data-exp" value="<%= userDetails.data_exp %>" disabled>
                             </div>
     
                             <div class="box">
@@ -59,7 +59,7 @@
     
                             <div class="box">
                                 <label for="data-nasc">Data de Nascimento:</label>
-                                <input type="date" id="data-nasc" name="dataNasc" value="<%= userDetails.data_nasc %>" disabled>
+                                <input type="text" id="data-nasc" name="dataNasc" value="<%= userDetails.data_nasc %>" disabled>
                             </div>
     
                             <div class="box">
@@ -99,13 +99,106 @@
 
                             <div class="box">
                                 <label for="data-cadastro">Data de cadastro:</label>
-                                <input type="date" id="data-cadastro" name="data-cadastro" value="<%= userDetails.data_cadastro %>" disabled>
+                                <input type="text" id="data-cadastro" name="data-cadastro" value="<%= userDetails.data_cadastro %>" disabled>
                             </div>
     
                         </fieldset>
                     <% } %>
                 </form>
 
+                <% if(dependentes.length > 0) { %>
+                    <form action="/">
+                            <% dependentes.forEach(function(dependente) { %>
+                                <fieldset>
+                                    <legend>Dependente</legend>
+                                    <div class="box">
+                                        <label for="nome-dependente">Nome do Dependente:</label>
+                                        <input type="text" id="nome-dependente" value="<%= dependente.nome_dependente %>" disabled>
+                                    </div>
+
+                                    <div class="box">
+                                        <label for="identidade-dependente">RG:</label>
+                                        <input type="text" id="identidade-dependente" value="<%= dependente.identidade %>" disabled>
+                                    </div>
+
+                                    <div class="box">
+                                        <label for="data-exp-dependente">Data Exp:</label>
+                                        <input type="text" id="data-exp-dependente" value="<%= dependente.data_exp %>" disabled>
+                                    </div>
+
+                                    <div class="box">
+                                        <label for="orgao-emissor-dependente">Órgão Emissor:</label>
+                                        <input type="text" id="orgao-emissor-dependente" value="<%= dependente.orgao_emissor %>" disabled>
+                                    </div>
+
+                                    <div class="box">
+                                        <label for="cpf-dependente">CPF:</label>
+                                        <input type="text" id="cpf-dependente" value="<%= dependente.cpf %>" disabled>
+                                    </div>
+
+                                    <div class="box">
+                                        <label for="estado-civil-dependente">Estado Civil:</label>
+                                        <input type="text" id="estado-civil-dependente" value="<%= dependente.estado_civil %>" disabled>
+                                    </div>
+
+                                    <div class="box">
+                                        <label for="data-nasc-dependente">Data Nasc:</label>
+                                        <input type="text" id="data-nasc-dependente" value="<%= dependente.data_nasc %>" disabled>
+                                    </div>
+
+                                    <div class="box">
+                                        <label for="cartao-sus-dependente">SUS:</label>
+                                        <input type="text" id="cartao-sus-dependente" value="<%= dependente.cartao_sus %>" disabled>
+                                    </div>
+
+                                    <div class="box">
+                                        <label for="endereco-dependente">Endereço:</label>
+                                        <input type="text" id="endereco-dependente" value="<%= dependente.endereco %>" disabled>
+                                    </div>
+
+                                    <div class="box">
+                                        <label for="numero-end-dependente">Nº:</label>
+                                        <input type="text" id="numero-end-dependente" value="<%= dependente.numero_end %>" disabled>
+                                    </div>
+                                    
+                                    <div class="box">
+                                        <label for="cidade-dependente">Cidade:</label>
+                                        <input type="text" id="cidade-dependente" value="<%= dependente.cidade %>" disabled>
+                                    </div>
+
+                                    <div class="box">
+                                        <label for="ddd-dependente">DDD:</label>
+                                        <input type="text" id="ddd-dependente" value="<%= dependente.ddd %>" disabled>
+                                    </div>
+
+                                    <div class="box">
+                                        <label for="tel-fixo-dependente">Tel Fixo:</label>
+                                        <input type="text" id="tel-fixo-dependente" value="<%= dependente.telefone_fixo %>" disabled>
+                                    </div>
+
+                                    <div class="box">
+                                        <label for="tel-celular-dependente">Tel Celular:</label>
+                                        <input type="text" id="tel-celular-dependente" value="<%= dependente.telefone_celular %>" disabled>
+                                    </div>
+
+                                    <div class="box">
+                                        <label for="tel-celular-dependente">Grau de Parentesco:</label>
+                                        <input type="text" id="tel-celular-dependente" value="<%= dependente.grau_parentesco %>" disabled>
+                                    </div>
+
+                                    <div class="box">
+                                        <label for="mae-dependente">Nome da mãe:</label>
+                                        <input type="text" id="mae-dependente" value="<%= dependente.nome_mae %>" disabled>
+                                    </div>
+
+                                    <div class="box">
+                                        <label for="data-cadastro-dependente">Data de cadastro:</label>
+                                        <input type="text" id="data-cadastro-dependente" value="<%= dependente.data_cadastro %>" disabled>
+                                    </div>
+                                </fieldset>
+                            <% }); %>
+                    </form>
+                <% } %>
 
             </article>
         </section>

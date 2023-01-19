@@ -6,18 +6,12 @@
     <p class="success-msg"><%= success_msg %></p>
 <% } %>
 
-
 <% if (typeof errors == 'object') { %>
     <% errors.forEach(function(error){ %>
         <p class="error-msg"><%= error.text %></p>
     <% }); %>
 <% } %>
 
-
 <% if ( success_msg.length > 0 ) { %>
     <p><%= success_msg %></p>
-<% } %>
-
-<% if ( error_msg.length > 0 ) { %>
-    <p><%= error_msg %></p>
 <% } %>

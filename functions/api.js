@@ -18,10 +18,6 @@ require("dotenv").config();
         methods: ["GET"]
     }));
 
-    // MIDDLEWARE FOR STATIC FILES
-    app.use(express.static(path.join(__dirname, "public")));
-
-
     // Session
     app.use(session({
         secret: 'ipmaserver',
@@ -57,6 +53,9 @@ require("dotenv").config();
     // MIDDLEWARE TO REDIRECT ALL ROUTES
     app.use("/usuarios", Usuarios);
     app.use("/parcelamentos", Parcelamentos);
+
+    // MIDDLEWARE FOR STATIC FILES
+    app.use(express.static(path.join(__dirname, "public")));
 
 
 
