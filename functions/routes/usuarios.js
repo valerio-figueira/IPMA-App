@@ -103,24 +103,37 @@ router.post("/cadastrar-usuario", async (req, res) => {
         req.body.cpf = req.body.cpf.replace("-", "");
 
 
+        // TO UPPERCASE
+        req.body.nome = req.body.nome.toUpperCase();
+        req.body.identidade = req.body.identidade.toUpperCase();
+        req.body.orgaoEmissor = req.body.orgaoEmissor.toUpperCase();
+        req.body.endereco = req.body.endereco.toUpperCase();
+        req.body.estadoCivil = req.body.estadoCivil.toUpperCase();
+        req.body.bairro = req.body.bairro.toUpperCase();
+        req.body.cidade = req.body.cidade.toUpperCase();
+        req.body.sexo = req.body.sexo.toUpperCase();
+        req.body.nomeMae = req.body.nomeMae.toUpperCase();
+        req.body.nomePai = req.body.nomePai.toUpperCase();
+
+        
         const newUser = {
             matricula: req.body.matricula,
             nome: req.body.nome,
             identidade: req.body.identidade,
-            dataExp: req.body.dataExp,
-            orgaoEmissor: req.body.orgaoEmissor,
+            data_exp: req.body.dataExp,
+            orgao_emissor: req.body.orgaoEmissor,
             cpf: req.body.cpf,
             sexo: req.body.sexo,
-            estadoCivil: req.body.estadoCivil,
-            dataNasc: req.body.dataNasc,
-            cartaoSUS: req.body.cartaoSUS,
+            estado_civil: req.body.estadoCivil,
+            data_nasc: req.body.dataNasc,
+            cartao_sus: req.body.cartaoSUS,
             endereco: req.body.endereco,
-            numeroEnd: req.body.numeroEnd,
+            numero_endereco: req.body.numeroEnd,
             bairro: req.body.bairro,
             cidade: req.body.cidade,
-            nomeMae: req.body.nomeMae,
-            nomePai: req.body.nomePai,
-            dataCadastro: new Date(Date.now()).toISOString(),
+            nome_mae: req.body.nomeMae,
+            nome_pai: req.body.nomePai,
+            data_cadastro: convertISODATE(),
             aposentado: req.body.aposentado
         }
 
@@ -138,15 +151,22 @@ router.post("/cadastrar-usuario", async (req, res) => {
 
         con.connect((error) => {
             if(error){
-                throw error
+                res.render("pages/usuarios/novo-usuario", {error_msg: error})
             } else{
-                const userData = `INSERT INTO USUARIOS VALUES ('DEFAULT', '${newUser.matricula}', '${newUser.nome}', '${newUser.identidade}', '${newUser.dataExp}', '${newUser.orgaoEmissor}', '${newUser.cpf}', '${newUser.sexo}', '${newUser.estadoCivil}', '${newUser.dataNasc}', '${newUser.cartaoSUS}', '${newUser.endereco}', '${newUser.numeroEnd}', '${newUser.bairro}', '${newUser.cidade}', '${newUser.nomePai}', '${newUser.nomeMae}', '${newUser.dataCadastro}', '${newUser.aposentado}')`;
+                const userData = `INSERT INTO USUARIOS VALUES ('DEFAULT', '${newUser.matricula}', '${newUser.nome}', '${newUser.identidade}', '${newUser.data_exp}', '${newUser.orgao_emissor}', '${newUser.cpf}', '${newUser.sexo}', '${newUser.estado_civil}', '${newUser.data_nasc}', '${newUser.cartao_sus}', '${newUser.endereco}', '${newUser.numero_endereco}', '${newUser.bairro}', '${newUser.cidade}', '${newUser.nome_pai}', '${newUser.nome_mae}', '${newUser.data_cadastro}', '${newUser.aposentado}', NULL, NULL)`;
 
                 con.query(userData, function (error, result) {
                     if(error){
                         res.render("pages/usuarios/novo-usuario", {error_msg: "Não foi possível cadastrar o novo usuário no sistema: " + error})
                     } else {
-                        res.render("pages/usuarios/novo-usuario", {success_msg: "Usuário cadastrado com sucesso!"})
+                        newUser.cpf = convertCPF(newUser.cpf);
+
+                        [newUser.data_exp, newUser.data_nasc, newUser.data_cadastro] = convertDATE([newUser.data_exp, newUser.data_nasc, newUser.data_cadastro]);
+                        
+                        res.render(`pages/usuarios/detalhes-usuario`, {
+                            success_msg: "Usuário cadastrado com sucesso!",
+                            userDetails: newUser
+                        })
                     };
                     con.end();
                 });
@@ -165,12 +185,31 @@ router.post("/cadastrar-dependente", async (req, res) => {
 
 // FORM TO CREATE NEW
 router.get("/cadastrar-usuario", async (req, res) => {
-    console.log(req.flash("error_msg"), res.locals.error_msg)
     res.render("pages/usuarios/novo-usuario");
 });
 
-router.get("/cadastrar-dependente", async (req, res) => {
-    res.render("pages/dependentes/novo-dependente")
+router.get("/cadastrar-dependente/:id", async (req, res) => {
+    const con = mysql.createConnection({
+        host: HOST_NAME,
+        database: DB_NAME,
+        user: DB_USER,
+        password: DB_PASSWORD
+    });
+
+    con.query(`SELECT * FROM USUARIOS WHERE id=${req.params.id}`, (error, result, fields) => {
+        if(error){
+            res.render("pages/dependentes/novo-dependente", {error_msg: error});
+        } else{
+            const usuario = result[0];
+            console.log(usuario);
+
+                // INSERTING DOTS AND DASH INTO CPF NUMBERS
+                usuario.cpf = convertCPF(usuario.cpf);
+
+            con.end();
+            res.render("pages/dependentes/novo-dependente", {usuario});
+        };
+    });
 });
 
 
@@ -184,46 +223,76 @@ router.get("/", async (req, res) => {
         password: DB_PASSWORD
     });
 
-    con.connect((error) => {
-        if(error){
-            throw error
-        } else{
-            con.query("SELECT * FROM USUARIOS", (error, result, fields) => {
-                if(error){
-                    throw error;
-                } else{
-                    const usuarios = result;
-                    console.log(usuarios)
+    if(req.query.nome){
+        con.query(`SELECT * FROM USUARIOS WHERE nome LIKE '${req.query.nome}%'`, (error, result, fields) => {
+            if(error){
+                res.render("pages/usuarios/listar-usuarios", {error_msg: error});
+            } else{
+                const usuarios = result;
+                
 
-                    usuarios.forEach(usuario => {
-                      
-                      // CONVERT BOOLEAN NUMBER TO STRING
-                      if(usuario.aposentado == 1){
+                // CONVERT BOOLEAN NUMBER TO STRING
+                usuarios.forEach(usuario => {
+                    if(usuario.aposentado == 1){
                         usuario.aposentado = "Sim";
-                      } else{
+                    } else{
                         usuario.aposentado = "Não";
-                      }
+                    }
 
-                      usuario.data_cadastro = new Date(usuario.data_cadastro)
-                      .toLocaleDateString();
-                      usuario.data_nasc = new Date(usuario.data_nasc)
-                      .toLocaleDateString();
+                    usuario.data_cadastro = new Date(usuario.data_cadastro)
+                    .toLocaleDateString();
+                    usuario.data_nasc = new Date(usuario.data_nasc)
+                    .toLocaleDateString();
+                })
 
-                    })
+                console.log(usuarios)
 
-                    console.log(res.locals.success_msg)
-                    console.log(req.flash("success"))
-
-                    con.end();
-                    res.render("pages/usuarios/listar-usuarios", {
-                        success_msg: req.flash('success'),
-                        error_msg: res.locals.error_msg,
-                        usuarios
-                    });
-                };
-            });
-        };
-    });
+                con.end();
+                res.render("pages/usuarios/listar-usuarios", {usuarios});
+            };
+        });
+    } else {
+        con.connect((error) => {
+            if(error){
+                res.render("pages/usuarios/listar-usuarios", {
+                    error_msg: error
+                });
+            } else{
+                con.query("SELECT * FROM USUARIOS", (error, result, fields) => {
+                    if(error){
+                        con.end();
+                        res.render("pages/usuarios/listar-usuarios", {
+                            error_msg: error
+                        });
+                    } else{
+                        const usuarios = result;
+                        console.log(usuarios)
+    
+                        usuarios.forEach(usuario => {
+                          
+                          // CONVERT BOOLEAN NUMBER TO STRING
+                          if(usuario.aposentado == 1){
+                            usuario.aposentado = "Sim";
+                          } else{
+                            usuario.aposentado = "Não";
+                          }
+    
+                          usuario.data_cadastro = new Date(usuario.data_cadastro)
+                          .toLocaleDateString();
+                          usuario.data_nasc = new Date(usuario.data_nasc)
+                          .toLocaleDateString();
+    
+                        })
+    
+                        con.end();
+                        res.render("pages/usuarios/listar-usuarios", {
+                            usuarios
+                        });
+                    };
+                });
+            };
+        });
+    };
 });
 
 
@@ -238,14 +307,19 @@ router.get("/consultar/:id", async (req, res) => {
 
     con.connect((error) => {
         if(error){
-            throw error;
+            con.end();
+            res.render("pages/usuarios/detalhes-usuario", {
+                error_msg: error
+            });
         } else{
             con.query(`SELECT * FROM USUARIOS WHERE id=${req.params.id}`, (error, result, fields) => {
                 if(error){
-                    throw error;
+                    res.render("pages/usuarios/detalhes-usuario", {
+                        error_msg: `Houve uma falha: ${error}`
+                    });
                 } else{
                     const usuario = result[0];
-                    
+
 
                     // CONVERT BOOLEAN NUMBER TO STRING
                     if(usuario.aposentado == 1){
@@ -259,17 +333,16 @@ router.get("/consultar/:id", async (req, res) => {
                     usuario.data_cadastro = new Date(usuario.data_cadastro).toLocaleDateString();
 
                     // INSERTING DOTS AND DASH INTO CPF NUMBERS
-                    const cpf = usuario.cpf.split("");
-                    cpf.splice(3, 0, ".");
-                    cpf.splice(7, 0, ".");
-                    cpf.splice(11, 0, "-");
-                    usuario.cpf = cpf.join("");
+                    usuario.cpf = convertCPF(usuario.cpf);
 
                     console.log(usuario)
 
                     con.query(`SELECT * FROM DEPENDENTES WHERE id_titular=${req.params.id}`, (error, result, fields) => {
                         if(error){
-                            throw error;
+                            con.end();
+                            res.render("pages/usuarios/detalhes-usuario", {
+                                error_msg: `Houve uma falha: ${error}`
+                            });
                         } else{
                             const dependentes = result;
 
@@ -280,24 +353,21 @@ router.get("/consultar/:id", async (req, res) => {
                                 dependente.data_exclusao = new Date(dependente.data_exclusao).toLocaleDateString();
 
                                 // INSERTING DOTS AND DASH INTO CPF NUMBERS
-                                const cpf = dependente.cpf.split("");
-                                cpf.splice(3, 0, ".");
-                                cpf.splice(7, 0, ".");
-                                cpf.splice(11, 0, "-");
-                                dependente.cpf = cpf.join("");
+                                dependente.cpf = convertCPF(dependente.cpf);
                             })
 
-                            console.log(dependentes);
-
                             con.end();
-                            res.render("pages/usuarios/detalhes-usuario", {userDetails: usuario, dependentes});
-                        }
-                    })
+                            res.render("pages/usuarios/detalhes-usuario", {
+                                userDetails: usuario, 
+                                dependentes
+                            });
+                        };
+                    });
                 };
             });
         };
     });
-})
+});
 
 router.get("/buscar", async (req, res) => {
     const con = mysql.createConnection({
@@ -313,7 +383,8 @@ router.get("/buscar", async (req, res) => {
         } else{
             con.query(`SELECT * FROM USUARIOS WHERE nome LIKE '${req.query.nome}%'`, (error, result, fields) => {
                 if(error){
-                    throw error;
+                    con.end();
+                    res.render("pages/usuarios/listar-usuarios", {error_msg: error});
                 } else{
                     const usuarios = result;
                     
@@ -354,3 +425,34 @@ router.delete("/:id", async (req, res) => {})
 
 
 module.exports = router;
+
+
+
+// FUNCTIONS
+function convertCPF(cpf){
+    const cpfArray = cpf.split("");
+    cpfArray.splice(3, 0, ".");
+    cpfArray.splice(7, 0, ".");
+    cpfArray.splice(11, 0, "-");
+    cpf = cpfArray.join("");
+
+    return cpf;
+}
+
+function convertDATE(dates){
+    for(let date of dates){
+        date = new Date(date).toLocaleDateString();
+    }
+
+    return dates;
+}
+
+function convertISODATE(){
+    const year = new Date().getFullYear();
+    const month = new Date().getMonth() + 1;
+    const day = new Date().getDay();
+
+    const convertedDate = `${year}-${month}-${day}`;
+
+    return convertedDate;
+}

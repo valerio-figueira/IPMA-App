@@ -269,11 +269,14 @@ nav.navbar .dropdown:hover .dropbtn {
 
 main.container{
     display: grid;
-    grid-template-columns: 1fr 350px;
+    grid-template-columns: 1fr 300px;
 
-    padding: 1rem 4%;    
+    padding: 1rem 1%;    
 }
-
+main.container.max-width{
+    display: grid;
+    grid-template-columns: 1fr;
+}
 
 
 
@@ -377,9 +380,17 @@ tbody tr td.valor-parcela{
 }
 
 
-
-
-
+.post .box h3{
+    color: var(--light-gray);
+    font-size: 1.5rem;
+}
+.post .box p{
+    color: var(--light-gray);
+    font-size: 1.2rem;
+}
+.post .box h3, .post .box p{
+    margin: 1rem 0 0;
+}
 
 
 .box{
@@ -423,21 +434,28 @@ fieldset legend{
 }
 fieldset .box{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-between;
-    align-items: center;
+    align-items: baseline;
     
-    margin: .7rem 1rem;
+    margin: 1rem 1rem;
+}
+fieldset label{
+    font-size: 1.2rem;
 }
 fieldset input{
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     color: var(--font-color);
+    background-color: #ffffff;
+    border: 1px solid lightgray;
     outline: 3px solid transparent;
-    padding: .3rem .5rem;
+    padding: .5rem;
     width: 100%;
+    border-radius: 7px;
 }
 fieldset input:disabled{
-    background-color: var(--gray-color);
+    background-color: #f1f1f1;
+    border: 1px solid lightgray;
 }
 fieldset input:focus{
     outline: 3px solid var(--dark-green);

@@ -8,98 +8,120 @@
     <main class="container">
         <section class="main-column">
             <article class="post">
-                <h2 class="title">Informações do Usuário</h2>
+                <h2 class="title">Cadastrar Dependente</h2>
                 <div class="box">
-                    <h3>Titular:</h3>
-                    <p class="nome"></p>
-                    
+                    <% if( typeof usuario == 'object') { %>
+                        <h3>Titular: <span><%= usuario.nome %></span></h3>
+                        <p>CPF: <%= usuario.cpf %></p>
+                    <% } %>
                 </div>
 
-                <form action="/">
 
-                    <% if (typeof dependente == "object") { %>
-                        <fieldset>
-                            <legend>Titular</legend>
-                            <input type="hidden" value="<%= userDetails.id %>" name="id" disabled>
-    
-                            <div class="box">
-                                <label for="nome">Nome:</label>
-                                <input type="text" id="nome" name="nome" value="<%= userDetails.nome %>" disabled>
-                            </div>
-    
-                            <div class="box">
-                                <label for="identidade">RG:</label>
-                                <input type="text" name="identidade" id="identidade" value="<%= userDetails.identidade %>" disabled>
-                            </div>
-    
-                            <div class="box">
-                                <label for="data-exp">Data de Expedição:</label>
-                                <input type="date" id="data-exp" name="data-exp" value="<%= userDetails.data_exp %>" disabled>
-                            </div>
-    
-                            <div class="box">
-                                <label for="emissor">Órgão Emissor:</label>
-                                <input type="text" id="emissor" name="emissor" value="<%= userDetails.orgao_emissor %>" disabled>
-                            </div>
-    
-                            <div class="box">
-                                <label for="cpf">CPF:</label>
-                                <input type="text" id="cpf" name="cpf" value="<%= userDetails.cpf %>" disabled>
-                            </div>
-    
-                            <div class="sexo box">
-                                <label for="sexo">Sexo:</label>
-                                <input type="text" disabled value="<%= userDetails.sexo %>" id="sexo">
-                            </div>
-    
-                            <div class="box">
-                                <label for="estado-civil">Estado Civil:</label>
-                                <input type="text" name="estadoCivil" id="estado-civil" value="<%= userDetails.estado_civil %>" disabled>
-                            </div>
-    
-                            <div class="box">
-                                <label for="data-nasc">Data de Nascimento:</label>
-                                <input type="date" id="data-nasc" name="dataNasc" value="<%= userDetails.data_nasc %>" disabled>
-                            </div>
-    
-                            <div class="box">
-                                <label for="cartao-sus">Cartão SUS:</label>
-                                <input type="text" id="cartao-sus" name="cartaoSUS" value="<%= userDetails.cartao_sus %>" disabled>
-                            </div>
-    
-                            <div class="box">
-                                <label for="endereco">Endereço: </label>
-                                <input type="text" id="endereco" name="endereco" value="<%= userDetails.endereco %>" disabled>
-                            </div>
-    
-                            <div class="box">
-                                <label for="numero">Nº:</label>
-                                <input type="number" id="numero" name="numeroEnd" value="<%= userDetails.numero_endereco %>" disabled>
-                            </div>
-    
-                            <div class="box">
-                                <label for="bairro">Bairro:</label>
-                                <input type="text" id="bairro" name="bairro" value="<%= userDetails.bairro %>" disabled>
-                            </div>
-    
-                            <div class="box">
-                                <label for="cidade">Cidade:</label>
-                                <input type="text" id="cidade" name="cidade" value="<%= userDetails.cidade %>" disabled>
-                            </div>
-                            
-                            <div class="box">
-                                <label for="nome-mae">Nome da mãe:</label>
-                                <input type="text" id="nome-mae" name="nomeMae" value="<%= userDetails.nome_mae %>" disabled>
-                            </div>
 
-                            <div class="box">
-                                <label for="data-cadastro">Data de cadastro:</label>
-                                <input type="date" id="data-cadastro" name="data-cadastro" value="<%= userDetails.data_cadastro %>" disabled>
-                            </div>
-    
-                        </fieldset>
-                    <% } %>
-                </form>
+                <form action="/usuarios/cadastrar-dependente" class="form-cadastro">
+                    <fieldset>
+                        <legend>Novo Dependente</legend>
+                        <div class="box">
+                            <label for="nome">Nome:</label>
+                            <input type="text" id="nome" name="nome" required>
+                            <span class="required-input">*</span>
+                        </div>
+
+                        <div class="box">
+                            <label for="identidade">RG:</label>
+                            <input type="text" name="identidade" id="identidade">
+                        </div>
+
+                        <div class="box">
+                            <label for="data-exp">Data de Expedição:</label>
+                            <input type="date" id="data-exp" name="dataExp">
+                        </div>
+
+                        <div class="box">
+                            <label for="orgao-emissor">Órgão Emissor:</label>
+                            <input type="text" id="orgao-emissor" name="orgaoEmissor">
+                        </div>
+
+                        <div class="box">
+                            <label for="cpf">CPF:</label>
+                            <input type="text" id="cpf" name="cpf" required>
+                            <span class="required-input">*</span>
+                        </div>
+
+                        <div class="box">
+                            <label for="sexo">Sexo:</label>
+                            <select name="sexo" id="sexo">
+                                <option value="">Selecione</option>
+                                <option value="Masculino">Masculino</option>
+                                <option value="Feminino">Feminino</option>
+                                <option value="Outro">Outro</option>
+                            </select>
+                            <span class="required-input">*</span>
+                        </div>
+
+                        <div class="box">
+                            <label for="estado-civil">Estado Civil:</label>
+                            <select name="estadoCivil" id="estado-civil">
+                                <option value="">Selecione</option>
+                                <option value="solteiro">Solteiro(a)</option>
+                                <option value="casado">Casado(a)</option>
+                                <option value="viuvo">Viúvo(a)</option>
+                                <option value="divorciado">Divorciado(a)</option>
+                            </select>
+                        </div>
+
+                        <div class="box">
+                            <label for="data-nasc">Data de Nascimento:</label>
+                            <input type="date" id="data-nasc" name="dataNasc">
+                        </div>
+
+                        <div class="box">
+                            <label for="cartao-sus">Cartão SUS:</label>
+                            <input type="text" id="cartao-sus" name="cartaoSUS">
+                        </div>
+
+                        <div class="box">
+                            <label for="endereco">Endereço: </label>
+                            <input type="text" id="endereco" name="endereco">
+                        </div>
+
+                        <div class="box">
+                            <label for="numero">Nº endereço:</label>
+                            <input type="number" id="numero" name="numeroEnd">
+                        </div>
+
+                        <div class="box">
+                            <label for="bairro">Bairro:</label>
+                            <input type="text" id="bairro" name="bairro">
+                        </div>
+
+                        <div class="box">
+                            <label for="cidade">Cidade:</label>
+                            <input type="text" id="cidade" name="cidade">
+                        </div>
+                        
+                        <div class="box">
+                            <label for="nome-mae">Nome da mãe:</label>
+                            <input type="text" id="nome-mae" name="nomeMae">
+                        </div>
+
+                        <div class="box">
+                            <label for="nome-pai">Nome do pai:</label>
+                            <input type="text" id="nome-pai" name="nomePai">
+                        </div>
+
+                        <div class="box">
+                            <label for="aposentado">Aposentado:</label>
+                            <select name="aposentado" id="aposentado">
+                                <option value="">Selecione</option>
+                                <option value="1">Sim</option>
+                                <option value="0">Não</option>
+                            </select>
+                        </div>
+                    </fieldset>
+            </form>
+
+
 
 
             </article>

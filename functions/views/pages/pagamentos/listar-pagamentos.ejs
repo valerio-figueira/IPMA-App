@@ -8,40 +8,52 @@
         <section class="main-column">
             <article class="post">
                 <h2 class="title">Pagamentos</h2>
-                <a href="/novo-pagamento" class="btn">Novo Pagamento</a>
-                <table class="pagamentos">
-                    <thead>
-                        <tr>
-                            <th>Matrícula</th>
-                            <th>Nome</th>
-                            <th>Orçamento</th>
-                            <th>Nº Parcelas</th>
-                            <th>Valor Parc.</th>
-                            <th>Pago</th>
-                            <th>Data Pagamento</th>
-                            <th>Clínica</th>
-                            <th>Data Início</th>
-                            <th>Atualizar</th>
-                        </tr>
-                    </thead>
 
-                    <tbody>
-                        <% data.forEach(function(selection){ %>
-                            <tr id=<%= selection.id %>>
-                                <td><%= selection.matricula %></td>
-                                <td><%= selection.nome %></td>
-                                <td>R$<%= selection.valor_total %></td>
-                                <td><%= selection.qtd_parcelas %></td>
-                                <td>R$<%= selection.valor_parcela %></td>
-                                <td><%= selection.pago %></td>
-                                <td><%= selection.data_pagamento %></td>
-                                <td><%= selection.clinica %></td>
-                                <td><%= selection.data_inicio %></td>
-                                <td class="td-anchor"><a href="/parcelamentos/atualizar" class="btn fa fa-edit table-anchor"></a></td>
+                <form action="/parcelamentos/pagamentos" method="GET" class="search-form">
+                    <label for="search">Buscar por Usuário:</label>
+                    <input type="text" id="search" name="nome">
+                    <label for="date">Data:</label>
+                    <input type="date" id="date" name="data">
+                    <button type="submit" class="btn">Pesquisar</button>
+                </form>
+
+                <a href="/novo-pagamento" class="btn">Novo Pagamento</a>
+
+                <% if(data.length > 0) { %>
+                    <table class="pagamentos">
+                        <thead>
+                            <tr>
+                                <th>Matrícula</th>
+                                <th>Nome</th>
+                                <th>Orçamento</th>
+                                <th>Nº Parcelas</th>
+                                <th>Valor Parc.</th>
+                                <th>Pago</th>
+                                <th>Data Pagamento</th>
+                                <th>Clínica</th>
+                                <th>Data Início</th>
+                                <th>Atualizar</th>
                             </tr>
-                        <% }); %>
-                    </tbody>
-                </table>
+                        </thead>
+    
+                        <tbody>
+                            <% data.forEach(function(selection){ %>
+                                <tr id=<%= selection.id %>>
+                                    <td><%= selection.matricula %></td>
+                                    <td><%= selection.nome %></td>
+                                    <td>R$<%= selection.valor_total %></td>
+                                    <td><%= selection.qtd_parcelas %></td>
+                                    <td>R$<%= selection.valor_parcela %></td>
+                                    <td><%= selection.pago %></td>
+                                    <td><%= selection.data_pagamento %></td>
+                                    <td><%= selection.clinica %></td>
+                                    <td><%= selection.data_inicio %></td>
+                                    <td class="td-anchor"><a href="/parcelamentos/atualizar" class="btn fa fa-edit table-anchor"></a></td>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                <% } %>
             </article>
         </section>
 
