@@ -1,5 +1,5 @@
 {
-  "name": "ipma-server"
+  "name": "ipma-server",
   "version": "1.0.0",
   "description": "IPMA Application Server",
   "main": "app.js",
