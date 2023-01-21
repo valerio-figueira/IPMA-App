@@ -42,9 +42,9 @@ router.get("/", (req, res) => {
             throw error
         } else{
               if(req.query.nome) {
-                con.query(`SELECT USUARIOS.id, USUARIOS.matricula, USUARIOS.nome, USUARIOS.aposentado, PARCELAMENTOS.valor_total, PARCELAMENTOS.qtd_parcelas, PARCELAMENTOS.valor_parcela, COUNT(*) as qtd_parcelas_pagas, DATE_FORMAT(PARCELAMENTOS.data_inicio, '%m/%d/%Y') as data_inicio, CONVENIOS.nome_convenio FROM USUARIOS, PARCELAMENTOS, PAGAMENTOS, CONVENIOS WHERE USUARIOS.id = PARCELAMENTOS.id_usuario AND PAGAMENTOS.id_parcelamento = PARCELAMENTOS.id AND USUARIOS.nome LIKE '${req.query.nome}%' AND WHERE CONVENIOS.id = PARCELAMENTOS.id_convenio GROUP BY USUARIOS.nome;`, (error, result, fields) => {
+                con.query(`SELECT USUARIOS.id, USUARIOS.matricula, USUARIOS.nome, USUARIOS.aposentado, PARCELAMENTOS.valor_total, PARCELAMENTOS.qtd_parcelas, PARCELAMENTOS.valor_parcela, COUNT(*) as qtd_parcelas_pagas, DATE_FORMAT(PARCELAMENTOS.data_inicio, '%m/%d/%Y') as data_inicio, CONVENIOS.nome_convenio FROM USUARIOS, PARCELAMENTOS, PAGAMENTOS, CONVENIOS WHERE USUARIOS.id = PARCELAMENTOS.id_usuario AND PAGAMENTOS.id_parcelamento = PARCELAMENTOS.id AND USUARIOS.nome LIKE '${req.query.nome}%' AND CONVENIOS.id = PARCELAMENTOS.id_convenio GROUP BY USUARIOS.nome;`, (error, result, fields) => {
                   if(error){
-                      throw error;
+                    res.render("pages/parcelamentos", {error_msg: error});
                   } else {
                       const data = result;
                       console.log(data)

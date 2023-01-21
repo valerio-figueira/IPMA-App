@@ -9,7 +9,7 @@
             <article class="post">
                 <h2 class="title">Usuários</h2>
 
-                <form action="/usuarios/buscar" method="GET" class="search-form">
+                <form action="/usuarios" method="GET" class="search-form">
                     <label for="search">Buscar Usuário:</label>
                     <input type="text" id="search" name="nome">
                     <button type="submit" class="btn">Pesquisar</button>
@@ -29,7 +29,7 @@
                 <%- include('../../partials/msg') %>
                 
                 <table class="usuarios">
-                    <thead>
+                    <thead class="table-head">
                         <tr>
                             <th>Matrícula</th>
                             <th>Nome</th>
@@ -42,10 +42,10 @@
                         </tr>
                     </thead>
 
-                    <tbody>
-                        <% if (usuarios.length > 0) { %>
+                    <tbody class="table-body" id="paginated-list">
+                        <% if (typeof usuarios == 'object') { %>
                         <% usuarios.forEach(function(usuario) { %>
-                            <tr>
+                            <tr class="table-row">
                                 <td><%= usuario.matricula %></td>
                                 <td><%= usuario.nome %></td>
                                 <td><%= usuario.aposentado %></td>
@@ -59,6 +59,17 @@
                         <% } %>
                     </tbody>
                 </table>
+                <nav id="pagination-container">
+                    <button class="pagination-button" id="prev-button" title="Previous page" aria-label="Previous page">
+                      &lt;
+                    </button>
+                  
+                    <div id="pagination-numbers"></div>
+                  
+                    <button class="pagination-button" id="next-button" title="Next page" aria-label="Next page">
+                      &gt;
+                    </button>
+                </nav>
             </article>
         </section>
 

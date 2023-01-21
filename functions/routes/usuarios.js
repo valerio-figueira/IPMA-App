@@ -1,11 +1,7 @@
 const router = require("express").Router();
-const mysql = require("mysql");
-require("dotenv").config();
 
-const DB_USER = process.env.DB_USER;
-const DB_PASSWORD = process.env.DB_PASSWORD;
-const DB_NAME = process.env.DB_NAME;
-const HOST_NAME = process.env.HOST_NAME;
+// IMPORT FUNCTIONS
+const { convertCPF, convertDATE, convertISODATE, createSQLConnection, convertBooleanToString } = require('./functions.js');
 
 
 
@@ -69,7 +65,6 @@ router.post("/cadastrar-usuario", async (req, res) => {
         }
     }
 
-
     if(errors.length > 0){
         res.render("pages/usuarios/novo-usuario", {errors})
     } else{
@@ -97,6 +92,7 @@ router.post("/cadastrar-usuario", async (req, res) => {
         if(req.body.numeroEnd == 0){
             req.body.numeroEnd = null;
         }
+
 
         // REMOVING DASH AND DOTS FROM CPF INPUT
         req.body.cpf = req.body.cpf.replaceAll(".", "");
@@ -142,12 +138,7 @@ router.post("/cadastrar-usuario", async (req, res) => {
 
         
 
-        const con = mysql.createConnection({
-            host: HOST_NAME,
-            database: DB_NAME,
-            user: DB_USER,
-            password: DB_PASSWORD
-        });
+        const con = createSQLConnection();
 
         con.connect((error) => {
             if(error){
@@ -172,13 +163,11 @@ router.post("/cadastrar-usuario", async (req, res) => {
                 });
             };
         });
-        
-        
-    }
+    };
+});
 
 
 
-})
 router.post("/cadastrar-dependente", async (req, res) => {
     
 });
@@ -189,12 +178,7 @@ router.get("/cadastrar-usuario", async (req, res) => {
 });
 
 router.get("/cadastrar-dependente/:id", async (req, res) => {
-    const con = mysql.createConnection({
-        host: HOST_NAME,
-        database: DB_NAME,
-        user: DB_USER,
-        password: DB_PASSWORD
-    });
+    const con = createSQLConnection();
 
     con.query(`SELECT * FROM USUARIOS WHERE id=${req.params.id}`, (error, result, fields) => {
         if(error){
@@ -216,12 +200,7 @@ router.get("/cadastrar-dependente/:id", async (req, res) => {
 
 // READ
 router.get("/", async (req, res) => {
-    const con = mysql.createConnection({
-        host: HOST_NAME,
-        database: DB_NAME,
-        user: DB_USER,
-        password: DB_PASSWORD
-    });
+    const con = createSQLConnection();
 
     if(req.query.nome){
         con.query(`SELECT * FROM USUARIOS WHERE nome LIKE '${req.query.nome}%'`, (error, result, fields) => {
@@ -233,16 +212,11 @@ router.get("/", async (req, res) => {
 
                 // CONVERT BOOLEAN NUMBER TO STRING
                 usuarios.forEach(usuario => {
-                    if(usuario.aposentado == 1){
-                        usuario.aposentado = "Sim";
-                    } else{
-                        usuario.aposentado = "Não";
-                    }
-
+                    usuario.aposentado = convertBooleanToString(usuario.aposentado)
                     usuario.data_cadastro = new Date(usuario.data_cadastro)
                     .toLocaleDateString();
                     usuario.data_nasc = new Date(usuario.data_nasc)
-                    .toLocaleDateString();
+                    .toLocaleDateString();                    
                 })
 
                 console.log(usuarios)
@@ -269,13 +243,8 @@ router.get("/", async (req, res) => {
                         console.log(usuarios)
     
                         usuarios.forEach(usuario => {
-                          
                           // CONVERT BOOLEAN NUMBER TO STRING
-                          if(usuario.aposentado == 1){
-                            usuario.aposentado = "Sim";
-                          } else{
-                            usuario.aposentado = "Não";
-                          }
+                          usuario.aposentado = convertBooleanToString(usuario.aposentado);
     
                           usuario.data_cadastro = new Date(usuario.data_cadastro)
                           .toLocaleDateString();
@@ -298,12 +267,7 @@ router.get("/", async (req, res) => {
 
 // READ ONLY
 router.get("/consultar/:id", async (req, res) => {
-    const con = mysql.createConnection({
-        host: HOST_NAME,
-        database: DB_NAME,
-        user: DB_USER,
-        password: DB_PASSWORD
-    });
+    const con = createSQLConnection();
 
     con.connect((error) => {
         if(error){
@@ -322,11 +286,7 @@ router.get("/consultar/:id", async (req, res) => {
 
 
                     // CONVERT BOOLEAN NUMBER TO STRING
-                    if(usuario.aposentado == 1){
-                        usuario.aposentado = "Sim";
-                    } else{
-                        usuario.aposentado = "Não";
-                    }
+                    usuario.aposentado = convertBooleanToString(usuario.aposentado);
 
                     usuario.data_nasc = new Date(usuario.data_nasc).toLocaleDateString();
                     usuario.data_exp = new Date(usuario.data_exp).toLocaleDateString();
@@ -369,50 +329,6 @@ router.get("/consultar/:id", async (req, res) => {
     });
 });
 
-router.get("/buscar", async (req, res) => {
-    const con = mysql.createConnection({
-        host: HOST_NAME,
-        database: DB_NAME,
-        user: DB_USER,
-        password: DB_PASSWORD
-    });
-
-    con.connect((error) => {
-        if(error){
-            throw error
-        } else{
-            con.query(`SELECT * FROM USUARIOS WHERE nome LIKE '${req.query.nome}%'`, (error, result, fields) => {
-                if(error){
-                    con.end();
-                    res.render("pages/usuarios/listar-usuarios", {error_msg: error});
-                } else{
-                    const usuarios = result;
-                    
-
-                    // CONVERT BOOLEAN NUMBER TO STRING
-                    usuarios.forEach(usuario => {
-                        if(usuario.aposentado == 1){
-                            usuario.aposentado = "Sim";
-                        } else{
-                            usuario.aposentado = "Não";
-                        }
-
-                        usuario.data_cadastro = new Date(usuario.data_cadastro)
-                        .toLocaleDateString();
-                        usuario.data_nasc = new Date(usuario.data_nasc)
-                        .toLocaleDateString();
-                    })
-
-                    console.log(usuarios)
-
-                    con.end();
-                    res.render("pages/usuarios/listar-usuarios", {usuarios});
-                };
-            });
-        };
-    });
-})
-
 
 
 // UPDATE
@@ -425,34 +341,3 @@ router.delete("/:id", async (req, res) => {})
 
 
 module.exports = router;
-
-
-
-// FUNCTIONS
-function convertCPF(cpf){
-    const cpfArray = cpf.split("");
-    cpfArray.splice(3, 0, ".");
-    cpfArray.splice(7, 0, ".");
-    cpfArray.splice(11, 0, "-");
-    cpf = cpfArray.join("");
-
-    return cpf;
-}
-
-function convertDATE(dates){
-    for(let date of dates){
-        date = new Date(date).toLocaleDateString();
-    }
-
-    return dates;
-}
-
-function convertISODATE(){
-    const year = new Date().getFullYear();
-    const month = new Date().getMonth() + 1;
-    const day = new Date().getDay();
-
-    const convertedDate = `${year}-${month}-${day}`;
-
-    return convertedDate;
-}

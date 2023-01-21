@@ -589,6 +589,42 @@ form.filtro button.btn{
 
 
 
+#pagination-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1rem;
+    gap: .5rem;
+}
+#pagination-container .pagination-button, #pagination-container .pagination-number{
+    background: var(--dark-gray);
+    color: var(--light-green);
+    border: 3px solid transparent;
+    font-size: 1.3rem;
+    padding: .5rem;
+    cursor: pointer;
+}
+#pagination-container .pagination-button:hover, #pagination-container .pagination-number:hover{
+    border: 3px solid var(--light-green);
+    background-color: var(--font-hover);
+}
+#pagination-numbers{
+    display: flex;
+    gap: .5rem;
+}
+#pagination-container #pagination-numbers .pagination-number.active{
+    background-color: var(--font-hover);
+    border: 3px solid var(--light-green);
+}
+
+
+
+.hidden{
+    display: none;
+}
+
+
 footer{
     margin-top: 2rem;
     padding: 5rem 7%;

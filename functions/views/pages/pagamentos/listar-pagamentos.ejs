@@ -10,7 +10,7 @@
                 <h2 class="title">Pagamentos</h2>
 
                 <form action="/parcelamentos/pagamentos" method="GET" class="search-form">
-                    <label for="search">Buscar por Usuário:</label>
+                    <label for="search">Buscar Usuário:</label>
                     <input type="text" id="search" name="nome">
                     <label for="date">Data:</label>
                     <input type="date" id="date" name="data">
@@ -46,7 +46,7 @@
                                     <td>R$<%= selection.valor_parcela %></td>
                                     <td><%= selection.pago %></td>
                                     <td><%= selection.data_pagamento %></td>
-                                    <td><%= selection.clinica %></td>
+                                    <td><%= selection.nome_convenio %></td>
                                     <td><%= selection.data_inicio %></td>
                                     <td class="td-anchor"><a href="/parcelamentos/atualizar" class="btn fa fa-edit table-anchor"></a></td>
                                 </tr>

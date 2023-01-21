@@ -1,8 +1,8 @@
 {
-  "name": "ipma-backend",
+  "name": "ipma-server"
   "version": "1.0.0",
-  "description": "Backend to website IPMA",
-  "main": "api.js",
+  "description": "IPMA Application Server",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,14 +10,12 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.20.1",
-    "connect-flash": "^0.1.1",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "ejs": "^3.1.8",
     "express": "^4.18.2",
     "express-handlebars": "^6.0.6",
     "express-session": "^1.17.3",
-    "mongoose": "^6.8.3",
     "mysql": "^2.18.1",
     "serverless-http": "^3.1.1"
   }

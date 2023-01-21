@@ -5,9 +5,8 @@ const path = require("path");
 const cors = require("cors");
 const Usuarios = require("./routes/usuarios");
 const Parcelamentos = require("./routes/parcelamentos");
-const flash = require("connect-flash");
 const session = require("express-session");
-var bodyParser = require('body-parser');
+const bodyParser = require('body-parser');
 require("dotenv").config();
 
 
@@ -22,24 +21,14 @@ require("dotenv").config();
     app.use(session({
         secret: 'ipmaserver',
         resave: true,
-        saveUninitialized: true
+        saveUninitialized: true,
     }))
-    // TO DISPLAY MESSAGES
-    app.use(flash());
-
-
-    // Middleware
-    app.use((req, res, next) => {
-        // res.locals used to create global variables
-        res.locals.success_msg = req.flash("success_msg");
-        res.locals.error_msg = req.flash("error_msg");
-        next();
-    });
-
 
     // JSON CONFIG IN MIDDLEWARES
     // Body Parser
-    app.use(bodyParser.urlencoded({extended: true}));
+    app.use(bodyParser.urlencoded({
+        extended: true,
+    }));
     app.use(bodyParser.json());
 
 
