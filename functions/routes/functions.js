@@ -42,9 +42,11 @@ function convertDATE(dates){
 function convertISODATE(){
     const year = new Date().getFullYear();
     const month = new Date().getMonth() + 1;
-    const day = new Date().getDay();
+    const day = new Date();
 
-    const convertedDate = `${year}-${month}-${day}`;
+    const convertedDate = `${year}-${month}-${day.getDate()}`;
+
+    console.log("Day: " + day)
 
     return convertedDate;
 }

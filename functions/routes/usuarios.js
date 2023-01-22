@@ -234,7 +234,6 @@ router.get("/", async (req, res) => {
             } else{
                 con.query("SELECT * FROM USUARIOS", (error, result, fields) => {
                     if(error){
-                        con.end();
                         res.render("pages/usuarios/listar-usuarios", {
                             error_msg: error
                         });
@@ -271,7 +270,6 @@ router.get("/consultar/:id", async (req, res) => {
 
     con.connect((error) => {
         if(error){
-            con.end();
             res.render("pages/usuarios/detalhes-usuario", {
                 error_msg: error
             });

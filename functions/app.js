@@ -22,6 +22,11 @@ require("dotenv").config();
         secret: 'ipmaserver',
         resave: true,
         saveUninitialized: true,
+        cookie: {
+            sameSite: "None",
+            secure: true,
+            maxAge: 24 * 60 * 60 * 1000 // 24 hours
+        }
     }))
 
     // JSON CONFIG IN MIDDLEWARES

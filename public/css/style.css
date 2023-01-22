@@ -8,9 +8,9 @@
     --sooth-gray: #f1f9fc;
     --gray-color: #e3e3e3;
     --light-yellow: #D6D58E;
-    --light-green: #9fdb44;
+    --light-green: #93D94E;
     --dark-green: #74c100;
-    --dark-gray: #303c57;
+    --dark-gray: #223240;
     --light-gray: #9297a3;
     --white: #ffffff;
     --nav-hover: #444c5b;
@@ -24,7 +24,10 @@
 
     --mobile: 360px;
 }
-
+/*
+dark-gray: #303c57
+light-green: #9fdb44
+*/
 
 html{
     scroll-behavior: smooth;
@@ -277,7 +280,9 @@ main.container.max-width{
     display: grid;
     grid-template-columns: 1fr;
 }
-
+main.container.max-width section.main-column{
+    margin: auto;
+}
 
 
 
@@ -287,6 +292,8 @@ section.main-column{
     padding: 1rem;
     margin-right: 1rem;
     border: 1px solid lightgray;
+    min-height: 70vh;;
+    width: 100%;
 }
 
 
@@ -294,6 +301,7 @@ section.main-column{
 
 /* SIDE-COLUMN */
 section.side-column{
+    margin-left: .5rem;
     padding: 1rem;
     border: 1px solid lightgray;
 }
@@ -330,6 +338,7 @@ section.side-column .picture-container .paragraph .ref{
 
 /* TABLE CSS */
 table{
+    width: 100%;
     margin-top: .5rem;
     border: 1px solid lightgray;
 }
@@ -359,6 +368,9 @@ tbody tr td:hover{
 tbody tr td.td-anchor:hover{
     background-color: transparent;
 }
+tbody tr{
+    background-color: #f5f5f5;
+}
 .table-anchor{
     padding: .5rem 0;
     border-radius: 5px;
@@ -378,7 +390,17 @@ tbody tr td.valor-parcela{
     color: var(--font-color);
     font-weight: bold;
 }
-
+tbody tr td .remove{
+    color: #ff9797;
+}
+tbody tr td .remove:hover{
+    color: #ff5454;
+    border: 3px solid #ff5454;
+}
+form.td-form{
+    padding: 0; margin: 0;
+    border: none;
+}
 
 .post .box h3{
     color: var(--light-gray);
@@ -409,8 +431,21 @@ tbody tr td.valor-parcela{
     border: 3px solid var(--dark-green);
 }
 
-
-
+.info-box{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+}
+.info-box p{
+    color: var(--font-color);
+    border: 1px solid lightgray;
+    padding: .7rem;
+}
+.info-box p:hover{
+    border: 1px solid var(--dark-green);
+    background-color: #e6ffc2;
+}
 
 
 
@@ -604,6 +639,7 @@ form.filtro button.btn{
     font-size: 1.3rem;
     padding: .5rem;
     cursor: pointer;
+    border-radius: 5px;
 }
 #pagination-container .pagination-button:hover, #pagination-container .pagination-number:hover{
     border: 3px solid var(--light-green);

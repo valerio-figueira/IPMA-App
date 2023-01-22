@@ -11,8 +11,11 @@
                 <h2 class="title">Cadastrar Dependente</h2>
                 <div class="box">
                     <% if( typeof usuario == 'object') { %>
-                        <h3>Titular: <span><%= usuario.nome %></span></h3>
-                        <p>CPF: <%= usuario.cpf %></p>
+                        <div class="info-box">
+                            <p>Matrícula: <%= usuario.matricula %></p>
+                            <p>Titular: <%= usuario.nome %></p>
+                            <p>CPF: <%= usuario.cpf %></p>
+                        </div>
                     <% } %>
                 </div>
 
