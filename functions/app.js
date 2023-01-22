@@ -7,6 +7,7 @@ const Usuarios = require("./routes/usuarios");
 const Parcelamentos = require("./routes/parcelamentos");
 const session = require("express-session");
 const bodyParser = require('body-parser');
+const flash = require('connect-flash');
 require("dotenv").config();
 
 
@@ -28,6 +29,15 @@ require("dotenv").config();
             maxAge: 24 * 60 * 60 * 1000 // 24 hours
         }
     }))
+
+
+    app.use(flash());
+    app.use((req, res, next) => {
+        // res.locals serve para criar variáveis globais
+        res.locals.success_msg = req.flash("success_msg");
+        res.locals.error_msg = req.flash("error_msg");
+        next();
+    });
 
     // JSON CONFIG IN MIDDLEWARES
     // Body Parser

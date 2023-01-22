@@ -46,7 +46,15 @@ function convertISODATE(){
 
     const convertedDate = `${year}-${month}-${day.getDate()}`;
 
-    console.log("Day: " + day)
+    return convertedDate;
+}
+
+function createNewDate(){
+    const year = new Date().getFullYear();
+    const month = new Date().getMonth() + 1;
+    const day = new Date();
+
+    const convertedDate = `${day.getDate()}-${month}-${year}`;
 
     return convertedDate;
 }
@@ -64,4 +72,4 @@ function convertBooleanToString(aposentado){
 
 
 
-module.exports = { convertCPF, convertDATE, convertISODATE, createSQLConnection, convertBooleanToString }
+module.exports = { convertCPF, convertDATE, convertISODATE, createSQLConnection, convertBooleanToString, createNewDate }

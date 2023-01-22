@@ -1,9 +1,10 @@
 const router = require("express").Router();
+const fs = require('fs');
 require("dotenv").config();
 
 
 // IMPORT FUNCTIONS
-const { convertISODATE, createSQLConnection, convertBooleanToString, convertCPF, convertDATE } = require('./functions.js');
+const { convertISODATE, createSQLConnection, convertBooleanToString, convertCPF } = require('./functions.js');
 
 
 
@@ -25,6 +26,7 @@ router.post("/novo-pagamento", async (req, res) => {
                 } else{
                   con.end();
                   //res.render("pages/pagamentos/listar-pagamentos", {success_msg: result});
+                  req.flash("success_msg", "Novo pagamento realizado!")
                   res.redirect(req.get("referer"))
                 }
             })
@@ -134,7 +136,7 @@ router.get("/", (req, res) => {
                       res.render("pages/parcelamentos", {error_msg: error});
                   } else{
                       const data = result;
-                      console.log(data)
+                      
 
                       // SUM ALL ROW PRICES
                       let totalPrice = 0;
@@ -152,6 +154,8 @@ router.get("/", (req, res) => {
                       })
 
                       totalPrice = Number(totalPrice).toFixed(2);
+
+                      console.log(data)
 
                       con.end();
                       res.render("pages/parcelamentos/listar-parcelamentos", {data, totalPrice});
@@ -232,6 +236,56 @@ router.get("/pagamentos/:id", async (req, res) => {
       };
   });
 })
+
+const stream = require('stream');
+
+router.get("/relatorio", (req, res) => {
+  const con = createSQLConnection();
+
+  con.query(`SELECT USUARIOS.id, USUARIOS.matricula, USUARIOS.nome, USUARIOS.aposentado, PARCELAMENTOS.valor_total, PARCELAMENTOS.qtd_parcelas, PARCELAMENTOS.valor_parcela, COUNT(*) as qtd_parcelas_pagas, DATE_FORMAT(PARCELAMENTOS.data_inicio, '%m/%d/%Y') as data_inicio, CONVENIOS.nome_convenio FROM USUARIOS, PARCELAMENTOS, PAGAMENTOS, CONVENIOS WHERE USUARIOS.id = PARCELAMENTOS.id_usuario AND PAGAMENTOS.id_parcelamento = PARCELAMENTOS.id AND CONVENIOS.id = PARCELAMENTOS.id_convenio GROUP BY PAGAMENTOS.id_parcelamento ORDER BY USUARIOS.nome;`, (error, result, fields) => {
+      if(error){
+          res.render("pages/parcelamentos", {error_msg: error});
+      } else{
+          const data = result;
+          
+
+          // SUM ALL ROW PRICES
+          let totalPrice = 0;
+
+          data.forEach(select => {
+            
+            // CONVERT BOOLEAN NUMBER TO STRING
+            select.aposentado = convertBooleanToString(select.aposentado);
+
+            totalPrice += select.valor_parcela;
+
+            // ADD DECIMAL POINTS
+            select.valor_total = Number(select.valor_total).toFixed(2);
+            select.valor_parcela = Number(select.valor_parcela).toFixed(2);
+          })
+
+          totalPrice = Number(totalPrice).toFixed(2);
+
+          console.log(data)
+
+          con.end();
+
+          const currentDATE = new Date().toLocaleString();
+
+          const fileName = `Relatório-Parcelamentos-${currentDATE}.txt`; 
+        
+          const fileContents = Buffer.from(data);
+
+          const readStream = new stream.PassThrough();
+          readStream.end(fileContents);
+        
+          res.set('Content-disposition', 'attachment; filename=' + fileName);
+          res.set('Content-Type', 'text/plain');
+        
+          readStream.pipe(res);
+      };
+  });
+});
 
 
 // READ ONLY

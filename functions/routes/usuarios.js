@@ -69,28 +69,26 @@ router.post("/cadastrar-usuario", async (req, res) => {
         res.render("pages/usuarios/novo-usuario", {errors})
     } else{
 
-        if(req.body.sexo.match("Feminino")){
+        if(req.body.sexo.match("FEMININO")){
             if(req.body.estadoCivil){
                 // UPDATE FIRST AND LAST LETTER OF 'ESTADOCIVIL'
                 const array = req.body.estadoCivil.split("");
                 array.pop();
-                array.push("a");
-                const letter = array.shift();
-                array.unshift(letter.toUpperCase());
-                req.body.estadoCivil = array.toString().replaceAll(",", "");
-            }
-        } else if(req.body.sexo.match("Masculino")){
-            if(req.body.estadoCivil){
-                // UPDATE FIRST LETTER OF 'ESTADOCIVIL'
-                const array = req.body.estadoCivil.split("");
-                const letter = array.shift();
-                array.unshift(letter.toUpperCase());
+                array.push("A");
                 req.body.estadoCivil = array.toString().replaceAll(",", "");
             }
         }
 
-        if(req.body.numeroEnd == 0){
+        if(req.body.numeroEnd == 0 || req.body.numeroEnd == ''){
             req.body.numeroEnd = null;
+        }
+
+        if(req.body.dataExp == 0 || req.body.dataExp == '' || req.body.dataExp.match("00-00-0000")){
+            req.body.dataExp = null;
+        }
+
+        if(req.body.dataNasc == 0 || req.body.dataNasc == '' || req.body.dataNasc.match("00-00-0000")){
+            req.body.dataNasc = null;
         }
 
 
@@ -129,8 +127,8 @@ router.post("/cadastrar-usuario", async (req, res) => {
             cidade: req.body.cidade,
             nome_mae: req.body.nomeMae,
             nome_pai: req.body.nomePai,
-            data_cadastro: convertISODATE(),
-            aposentado: req.body.aposentado
+            aposentado: req.body.aposentado,
+            data_cadastro: convertISODATE()
         }
 
         console.log(newUser);
@@ -144,7 +142,8 @@ router.post("/cadastrar-usuario", async (req, res) => {
             if(error){
                 res.render("pages/usuarios/novo-usuario", {error_msg: error})
             } else{
-                const userData = `INSERT INTO USUARIOS VALUES ('DEFAULT', '${newUser.matricula}', '${newUser.nome}', '${newUser.identidade}', '${newUser.data_exp}', '${newUser.orgao_emissor}', '${newUser.cpf}', '${newUser.sexo}', '${newUser.estado_civil}', '${newUser.data_nasc}', '${newUser.cartao_sus}', '${newUser.endereco}', '${newUser.numero_endereco}', '${newUser.bairro}', '${newUser.cidade}', '${newUser.nome_pai}', '${newUser.nome_mae}', '${newUser.data_cadastro}', '${newUser.aposentado}', NULL, NULL)`;
+                const userData = `INSERT INTO USUARIOS VALUES ('DEFAULT', '${newUser.matricula}', '${newUser.nome}', '${newUser.identidade}', ${newUser.data_exp != null ? "'" + newUser.data_exp + "'" : null}, '${newUser.orgao_emissor}', '${newUser.cpf}', '${newUser.sexo}', '${newUser.estado_civil}', ${newUser.data_nasc != null ? "'" + newUser.data_nasc + "'" : null}, '${newUser.cartao_sus}', '${newUser.endereco}', ${newUser.numero_endereco != null ? "'" + newUser.numero_endereco + "'" : null}, '${newUser.bairro}', '${newUser.cidade}', '${newUser.nome_pai}', '${newUser.nome_mae}', DEFAULT, '${newUser.aposentado}', DEFAULT, NULL)`;
+
 
                 con.query(userData, function (error, result) {
                     if(error){
@@ -152,12 +151,12 @@ router.post("/cadastrar-usuario", async (req, res) => {
                     } else {
                         newUser.cpf = convertCPF(newUser.cpf);
 
-                        [newUser.data_exp, newUser.data_nasc, newUser.data_cadastro] = convertDATE([newUser.data_exp, newUser.data_nasc, newUser.data_cadastro]);
+                        //[newUser.data_exp, newUser.data_nasc, newUser.data_cadastro] = convertDATE([newUser.data_exp, newUser.data_nasc, newUser.data_cadastro]);
                         
                         res.render(`pages/usuarios/detalhes-usuario`, {
                             success_msg: "Usuário cadastrado com sucesso!",
                             userDetails: newUser
-                        })
+                        });
                     };
                     con.end();
                 });
@@ -219,7 +218,7 @@ router.get("/", async (req, res) => {
                     .toLocaleDateString();                    
                 })
 
-                console.log(usuarios)
+                console.log(result)
 
                 con.end();
                 res.render("pages/usuarios/listar-usuarios", {usuarios});
@@ -246,9 +245,16 @@ router.get("/", async (req, res) => {
                           usuario.aposentado = convertBooleanToString(usuario.aposentado);
     
                           usuario.data_cadastro = new Date(usuario.data_cadastro)
-                          .toLocaleDateString();
-                          usuario.data_nasc = new Date(usuario.data_nasc)
-                          .toLocaleDateString();
+                          .toLocaleString();
+
+                          if(usuario.data_exp != null){
+                            usuario.data_exp = new Date(usuario.data_exp)
+                            .toLocaleDateString();
+                          }
+                          if(usuario.data_nasc != null){
+                            usuario.data_nasc = new Date(usuario.data_nasc)
+                            .toLocaleDateString();
+                          }
     
                         })
     
