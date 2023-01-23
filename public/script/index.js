@@ -9,12 +9,15 @@ if(document.querySelector(".form-cadastro")){
 */
 
 if(document.querySelector(".form-cadastro")){
+    const regexNumbers = /[0-9]/;
+    const alphabet = /[A-z-\s]/;
+    const redColor = "#ffd2d2";
+
+
     /* CHECK CPF INPUT */
     const inputCPF = document.querySelector("#cpf");
 
     inputCPF.addEventListener("keypress", (e) => {
-        const regex = /[0-9]/;
-
         if(e.target.value.length == 3){
             e.target.value += ".";
         }
@@ -31,8 +34,8 @@ if(document.querySelector(".form-cadastro")){
             e.preventDefault();
         }
 
-        if(!regex.test(e.key)){
-            e.target.style.backgroundColor = "#ffd2d2";
+        if(!regexNumbers.test(e.key)){
+            e.target.style.backgroundColor = redColor;
             e.preventDefault();
         } else{
             e.target.style.backgroundColor = "transparent";
@@ -50,11 +53,10 @@ if(document.querySelector(".form-cadastro")){
                 e.target.value = array.join("");
             }
         }
+    })
 
-        const regex = /[A-z-\s]/;
-
-        if(regex.test(e.target.value)){
-            console.log(e.target);
+    inputCPF.addEventListener('focusout', (e) =>{
+        if(regexNumbers.test(e.target.value) || e.target.value == ''){
             e.target.style.backgroundColor = "transparent";
         }
     })
@@ -68,48 +70,48 @@ if(document.querySelector(".form-cadastro")){
 
 
     /* CHECK MATRICULA INPUT */
-    document.querySelector("#matricula")
-    .addEventListener("keypress", (e) => {
-        const regex = /[0-9]/;
+    if(document.querySelector("#matricula")){
+        document.querySelector("#matricula")
+        .addEventListener("keypress", (e) => {
+    
+            if(e.target.value.length == 15){
+                e.preventDefault();
+            }
+            
+            if(!regexNumbers.test(e.key)){
+                e.preventDefault();
+            }
+        })
+    }
 
-        if(e.target.value.length == 15){
-            e.preventDefault();
-        }
-        
-        if(!regex.test(e.key)){
-            e.preventDefault();
-        }
-    })
 
 
 
 
     /* CHECK NOME INPUT */
-    document.querySelector("#nome")
-    .addEventListener("keypress", (e) => {
-        const regex = /[A-z-\s]/;
+    const nomeInput = document.querySelector("#nome");
+
+    nomeInput.addEventListener("keypress", (e) => {
 
         if(e.target.value.length == 60){
             e.preventDefault();
         }
 
-        if(!regex.test(e.key)){
-            e.target.style.backgroundColor = "#ffd2d2";
+        if(!alphabet.test(e.key)){
+            e.target.style.backgroundColor = redColor;
             e.preventDefault();
         } else{
             e.target.style.backgroundColor = "transparent";
         }
     })
-    document.querySelector("#nome")
-    .addEventListener("change", (e) => {
-        const regex = /[A-z-\s]/;
 
-        if(regex.test(e.target.value)){
+    nomeInput.addEventListener("focusout", (e) => {
+        if(alphabet.test(e.target.value) || e.target.value == ''){
             e.target.style.backgroundColor = "transparent";
         }
     })
-    document.querySelector("#nome")
-    .addEventListener("keyup", (e) => {
+
+    nomeInput.addEventListener("keyup", (e) => {
         if(e.key.match("Backspace")){
             e.target.style.backgroundColor = "transparent";
         }
@@ -119,9 +121,30 @@ if(document.querySelector(".form-cadastro")){
 
 
     /* CHECK ORGÃO EMISSOR INPUT */
-    document.querySelector("#orgao-emissor")
-    .addEventListener("keypress", (e) => {
+    const orgaoEmissor = document.querySelector("#orgao-emissor");
+
+    orgaoEmissor.addEventListener("keypress", (e) => {
         if(e.target.value.length == 7){
+            e.preventDefault();
+        }
+
+        if(!alphabet.test(e.key)){
+            e.target.style.backgroundColor = redColor;
+            e.preventDefault();
+        } else{
+            e.target.style.backgroundColor = "transparent";
+        }
+    })
+
+    orgaoEmissor.addEventListener("focusout", (e) => {
+        if(alphabet.test(e.target.value) || e.target.value == ''){
+            e.target.style.backgroundColor = "transparent";
+        }
+    })
+
+    document.querySelector("#identidade")
+    .addEventListener("keypress", (e) => {
+        if(e.target.value.length == 10){
             e.preventDefault();
         }
     })
@@ -129,14 +152,13 @@ if(document.querySelector(".form-cadastro")){
 
 
 
-
     // NUMERO DE ENDEREÇO
-    document.querySelector("#numero")
-    .addEventListener("keypress", (e) => {
-        const regex = /[0-9]/;
+    const addressNumber = document.querySelector("#numero");
 
-        if(!regex.test(e.key)){
-            e.target.style.backgroundColor = "#ffd2d2";
+    addressNumber.addEventListener("keypress", (e) => {
+
+        if(!regexNumbers.test(e.key)){
+            e.target.style.backgroundColor = redColor;
             e.preventDefault();
         } else{
             e.target.style.backgroundColor = "transparent";
@@ -144,35 +166,38 @@ if(document.querySelector(".form-cadastro")){
 
     })
 
-    document.querySelector("#numero")
-    .addEventListener("keyup", (e) => {
+    addressNumber.addEventListener("keyup", (e) => {
         if(e.key.match("Backspace")){
+            e.target.style.backgroundColor = "transparent";
+        }
+    })
+
+    addressNumber.addEventListener("focusout", (e) => {
+        if(regexNumbers.test(e.target.value) || e.target.value == ''){
             e.target.style.backgroundColor = "transparent";
         }
     })
 
 
     // CIDADE INPUT
-    document.querySelector("#cidade")
-    .addEventListener("keypress", (e) => {
-        const regex = /[A-z-\s]/;
+    const city = document.querySelector("#cidade");
+
+    city.addEventListener("keypress", (e) => {
 
         if(e.target.value.length == 30){
             e.preventDefault();
         }
 
-        if(!regex.test(e.key)){
-            e.target.style.backgroundColor = "#ffd2d2";
+        if(!alphabet.test(e.key)){
+            e.target.style.backgroundColor = redColor;
             e.preventDefault();
         } else{
             e.target.style.backgroundColor = "transparent";
         }
     })
-    document.querySelector("#cidade")
-    .addEventListener("keypress", (e) => {
-        const regex = /[A-z-\s]/;
 
-        if(regex.test(e.target.value)){
+    city.addEventListener("focusout", (e) => {
+        if(alphabet.test(e.target.value) || e.target.value == ''){
             e.target.style.backgroundColor = "transparent";
         }
     })
@@ -186,6 +211,26 @@ if(document.querySelector(".form-cadastro")){
         }
     })
 
+    const sus = document.querySelector("#cartao-sus");
+
+    sus.addEventListener("keypress", (e) => {
+        if(e.target.value.length == 15){
+            e.preventDefault();
+        }
+
+        if(!regexNumbers.test(e.key)){
+            e.target.style.backgroundColor = redColor;
+            e.preventDefault();
+        } else{
+            e.target.style.backgroundColor = "transparent";
+        }
+    })
+
+    sus.addEventListener("focusout", (e) => {
+        if(regexNumbers.test(e.target.value) || e.target.value == ""){
+            e.target.style.backgroundColor = "transparent";
+        }
+    })
 
 
 
