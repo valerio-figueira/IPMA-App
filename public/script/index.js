@@ -1,4 +1,3 @@
-
 /*
 if(document.querySelector(".form-cadastro")){
     const form = document.querySelector(".form-cadastro");

@@ -140,14 +140,17 @@ router.post("/cadastrar-usuario", async (req, res) => {
 
         con.connect((error) => {
             if(error){
-                res.render("pages/usuarios/novo-usuario", {error_msg: error})
+                res.render("pages/usuarios/novo-usuario", {
+                    error_msg: `Ocorreu um erro: ${error}`
+                })
             } else{
                 const userData = `INSERT INTO USUARIOS VALUES ('DEFAULT', '${newUser.matricula}', '${newUser.nome}', '${newUser.identidade}', ${newUser.data_exp != null ? "'" + newUser.data_exp + "'" : null}, '${newUser.orgao_emissor}', '${newUser.cpf}', '${newUser.sexo}', '${newUser.estado_civil}', ${newUser.data_nasc != null ? "'" + newUser.data_nasc + "'" : null}, '${newUser.cartao_sus}', '${newUser.endereco}', ${newUser.numero_endereco != null ? "'" + newUser.numero_endereco + "'" : null}, '${newUser.bairro}', '${newUser.cidade}', '${newUser.nome_pai}', '${newUser.nome_mae}', DEFAULT, '${newUser.aposentado}', DEFAULT, NULL)`;
 
 
                 con.query(userData, function (error, result) {
                     if(error){
-                        res.render("pages/usuarios/novo-usuario", {error_msg: "Não foi possível cadastrar o novo usuário no sistema: " + error})
+                        res.render("pages/usuarios/novo-usuario", {error_msg: "Não foi possível cadastrar o novo usuário no sistema: " + error});
+                        con.end();
                     } else {
                         newUser.cpf = convertCPF(newUser.cpf);
 
@@ -181,7 +184,8 @@ router.get("/cadastrar-dependente/:id", async (req, res) => {
 
     con.query(`SELECT * FROM USUARIOS WHERE id=${req.params.id}`, (error, result, fields) => {
         if(error){
-            res.render("pages/dependentes/novo-dependente", {error_msg: error});
+            res.render("pages/dependentes/novo-dependente", {error_msg: `Ocorreu um erro: ${error}`});
+            con.end();
         } else{
             const usuario = result[0];
             console.log(usuario);
@@ -189,8 +193,8 @@ router.get("/cadastrar-dependente/:id", async (req, res) => {
                 // INSERTING DOTS AND DASH INTO CPF NUMBERS
                 usuario.cpf = convertCPF(usuario.cpf);
 
-            con.end();
             res.render("pages/dependentes/novo-dependente", {usuario});
+            con.end();
         };
     });
 });
@@ -204,7 +208,8 @@ router.get("/", async (req, res) => {
     if(req.query.nome){
         con.query(`SELECT * FROM USUARIOS WHERE nome LIKE '${req.query.nome}%'`, (error, result, fields) => {
             if(error){
-                res.render("pages/usuarios/listar-usuarios", {error_msg: error});
+                res.render("pages/usuarios/listar-usuarios", {error_msg: `Ocorreu um erro: ${error}`});
+                con.end();
             } else{
                 const usuarios = result;
                 
@@ -220,22 +225,23 @@ router.get("/", async (req, res) => {
 
                 console.log(result)
 
-                con.end();
                 res.render("pages/usuarios/listar-usuarios", {usuarios});
+                con.end();
             };
         });
     } else {
         con.connect((error) => {
             if(error){
                 res.render("pages/usuarios/listar-usuarios", {
-                    error_msg: error
+                    error_msg: `Ocorreu um erro: ${error}`
                 });
             } else{
                 con.query("SELECT * FROM USUARIOS", (error, result, fields) => {
                     if(error){
                         res.render("pages/usuarios/listar-usuarios", {
-                            error_msg: error
+                            error_msg: `Ocorreu um erro: ${error}`
                         });
+                        con.end();
                     } else{
                         const usuarios = result;
                         console.log(usuarios)
@@ -258,10 +264,10 @@ router.get("/", async (req, res) => {
     
                         })
     
-                        con.end();
                         res.render("pages/usuarios/listar-usuarios", {
                             usuarios
                         });
+                        con.end();
                     };
                 });
             };
@@ -277,14 +283,15 @@ router.get("/consultar/:id", async (req, res) => {
     con.connect((error) => {
         if(error){
             res.render("pages/usuarios/detalhes-usuario", {
-                error_msg: error
+                error_msg: `Ocorreu um erro: ${error}`
             });
         } else{
             con.query(`SELECT * FROM USUARIOS WHERE id=${req.params.id}`, (error, result, fields) => {
                 if(error){
                     res.render("pages/usuarios/detalhes-usuario", {
-                        error_msg: `Houve uma falha: ${error}`
+                        error_msg: `Ocorreu um erro: ${error}`
                     });
+                    con.end();
                 } else{
                     const usuario = result[0];
 
@@ -303,10 +310,10 @@ router.get("/consultar/:id", async (req, res) => {
 
                     con.query(`SELECT * FROM DEPENDENTES WHERE id_titular=${req.params.id}`, (error, result, fields) => {
                         if(error){
-                            con.end();
                             res.render("pages/usuarios/detalhes-usuario", {
                                 error_msg: `Houve uma falha: ${error}`
                             });
+                            con.end();
                         } else{
                             const dependentes = result;
 
@@ -320,11 +327,11 @@ router.get("/consultar/:id", async (req, res) => {
                                 dependente.cpf = convertCPF(dependente.cpf);
                             })
 
-                            con.end();
                             res.render("pages/usuarios/detalhes-usuario", {
                                 userDetails: usuario, 
                                 dependentes
                             });
+                            con.end();
                         };
                     });
                 };
