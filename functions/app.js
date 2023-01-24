@@ -39,6 +39,8 @@ require("dotenv").config();
         // GLOBAL VARIABLES
         res.locals.success_msg = req.flash("success_msg");
         res.locals.error_msg = req.flash("error_msg");
+        res.locals.alert_msg = req.flash("alert_msg");
+        res.locals.warning_msg = req.flash("warning_msg");
         next();
     });
 
@@ -56,7 +58,7 @@ require("dotenv").config();
     app.use("/parcelamentos", Parcelamentos);
 
     // MIDDLEWARE FOR STATIC FILES
-    app.use(express.static(path.join(__dirname, "public")));
+    app.use(express.static(path.join("public")));
 
 
 
@@ -81,7 +83,11 @@ router.get("/", (req, res) => {
 
 router.get("/message", (req, res) => {
     if(req.session.msg){
-        res.send(req.session.msg)
+        res.render("pages/index", {
+            alert_msg: req.session.msg
+        })
+    } else{
+        res.render("pages/index")
     }
 });
 
@@ -90,9 +96,9 @@ router.get("/message", (req, res) => {
 
 
 app.use("/", router);
-/*
+
 app.listen(3000, () => {
     console.log("Server is up...")
 })
-*/
-module.exports.handler = serverless(app);
+
+//module.exports.handler = serverless(app);

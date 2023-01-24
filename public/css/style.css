@@ -605,8 +605,8 @@ form.filtro button.btn{
     display: block;
     width: fit-content;
     padding: .5rem 1rem;
-    color: #942e2e;
-    background-color: #ffadad;
+    color: #84202a;
+    background-color: #f8d7da;
     border-radius: 7px;
     margin: .5rem 0;
 }
@@ -614,13 +614,29 @@ form.filtro button.btn{
     display: block;
     width: fit-content;
     padding: .5rem 1rem;
-    color: #38942e;
-    background-color: #b5ffad;
+    color: #0f5133;
+    background-color: #d1e7dd;
     border-radius: 7px;
     margin: .5rem 0;
 }
-
-
+.warning-msg{
+    display: block;
+    width: fit-content;
+    padding: .5rem 1rem;
+    color: #664d03;
+    background-color: #fff3cd;
+    border-radius: 7px;
+    margin: .5rem 0;
+}
+.alert-msg{
+    display: block;
+    width: fit-content;
+    padding: .5rem 1rem;
+    color: #075162;
+    background-color: #cff4fc;
+    border-radius: 7px;
+    margin: .5rem 0;
+}
 
 
 
@@ -659,6 +675,16 @@ form.filtro button.btn{
 .hidden{
     display: none;
 }
+
+
+
+
+
+
+
+
+
+
 
 
 footer{

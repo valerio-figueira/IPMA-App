@@ -1,9 +1,17 @@
-<% if (typeof error_msg == 'string') { %>
+<% if (error_msg.length > 0 && typeof error_msg == 'string') { %>
     <p class="error-msg"><%= error_msg %></p>
 <% } %>
 
-<% if (typeof success_msg == 'string') { %>
+<% if (success_msg.length > 0 && typeof success_msg == 'string') { %>
     <p class="success-msg"><%= success_msg %></p>
+<% } %>
+
+<% if (warning_msg.length > 0 && typeof warning_msg == 'string') { %>
+    <p class="warning-msg"><%= warning_msg %></p>
+<% } %>
+
+<% if (alert_msg.length > 0 && typeof alert_msg == 'string') { %>
+    <p class="alert-msg"><%= alert_msg %></p>
 <% } %>
 
 <% if (typeof errors == 'object') { %>

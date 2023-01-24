@@ -23,6 +23,7 @@
                     <table class="pagamentos">
                         <thead>
                             <tr>
+                                <th>Nº</th>
                                 <th>Matrícula</th>
                                 <th>Nome</th>
                                 <th>Orçamento</th>
@@ -38,8 +39,9 @@
                         </thead>
     
                         <tbody>
-                            <% data.forEach(function(selection){ %>
+                            <% data.forEach(function(selection, index){ %>
                                 <tr id=<%= selection.id %>>
+                                    <td><%= index+1 %></td>
                                     <td><%= selection.matricula %></td>
                                     <td><%= selection.nome %></td>
                                     <td>R$<%= selection.valor_total %></td>
@@ -48,16 +50,21 @@
                                     <td><%= selection.data_inicio %></td>
                                     <td><%= selection.data_pagamento %></td>
                                     <td><%= selection.nome_convenio %></td>
-                                    <td class="td-anchor"><a href="/parcelamentos/atualizar" class="btn fa fa-hdd-o table-anchor"></a></td>
+                                    <td class="td-anchor">
+                                        <a href="/parcelamentos/atualizar" class="btn fa fa-hdd-o table-anchor"></a>
+                                    </td>
                                     <td class="td-anchor">
                                         <form action="/parcelamentos/novo-pagamento" method="POST" class="td-form">
+                                            <input type="hidden" value="<%= selection.id %>" name="id">
                                             <input type="hidden" value="<%= selection.id_parcelamento %>" name="id_parcelamento">
+                                            <input type="hidden" value="<%= selection.nome %>" name="nome">
                                             <button type="submit" class="btn fa fa-dollar table-anchor"></button>
                                         </form>
                                     </td>
                                     <td class="td-anchor">
                                         <form action="/parcelamentos/remover-pagamento" method="POST" class="td-form">
                                             <input type="hidden" value="<%= selection.id_pagamento %>" name="id">
+                                            <input type="hidden" value="<%= selection.nome %>" name="nome">
                                             <button type="submit" class="btn table-anchor fa fa-close remove"></button>
                                         </form>
                                     </td>

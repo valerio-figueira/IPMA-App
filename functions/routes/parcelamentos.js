@@ -16,19 +16,37 @@ router.post("/novo-pagamento", async (req, res) => {
         } else{
             const createNewDate = convertISODATE();
 
-            con.query(`INSERT INTO PAGAMENTOS VALUES (DEFAULT, ${req.body.id_parcelamento}, DEFAULT, '${createNewDate}')`, (error, result, field) => {
-                if(error){
-                  res.render("pages/pagamentos/listar-pagamentos", {error_msg: `Ocorreu um erro: ${error}`});
-                } else{
-                  con.end();
-                  //res.render("pages/pagamentos/listar-pagamentos", {success_msg: result});
-                  req.flash("success_msg", "Novo pagamento realizado!");
-                  res.redirect(301, req.get("referer"));
-                }
-            })
-        }
-    })
-})
+            con.query(`SELECT USUARIOS.id, USUARIOS.nome, PARCELAMENTOS.qtd_parcelas, COUNT(*) as qtd_parcelas_pagas FROM USUARIOS, PARCELAMENTOS, PAGAMENTOS WHERE USUARIOS.id = PARCELAMENTOS.id_usuario AND PAGAMENTOS.id_parcelamento = PARCELAMENTOS.id AND PARCELAMENTOS.id_usuario = ${req.body.id} GROUP BY PAGAMENTOS.id_parcelamento ORDER BY USUARIOS.nome;`, (error, result) => {
+            
+              if(error){
+                con.end();
+                req.flash("error_msg", "Ocorreu um erro: " + error);
+                res.redirect(301, req.get("referer"));
+              } else{
+                  const usuario = result[0];
+
+                  if(++usuario.qtd_parcelas_pagas > usuario.qtd_parcelas){
+                    con.end();
+                    req.flash("error_msg", "Não foi possível registrar o pagamento, limite máximo de parcelas atingido");
+                    res.redirect(301, req.get("referer"));
+                  } else{
+                    con.query(`INSERT INTO PAGAMENTOS VALUES (DEFAULT, ${req.body.id_parcelamento}, DEFAULT, '${createNewDate}')`, (error, result) => {
+                        if(error){
+                          con.end();
+                          req.flash("error_msg", "Ocorreu um erro: " + error);
+                          res.redirect(301, req.get("referer"));
+                        } else{
+                          con.end();
+                          req.flash("success_msg", "Novo pagamento realizado para " + req.body.nome);
+                          res.redirect(301, req.get("referer"));
+                        };
+                    });
+                  };
+              };
+          });
+        };
+    });
+});
 
 // CREATE PAGAMENTO
 router.get("/novo-pagamento/:id", async (req, res) => {
@@ -98,7 +116,7 @@ router.get("/", (req, res) => {
         if(error){
             res.render("pages/parcelamentos/listar-parcelamentos", {error_msg: error});
         } else {
-            con.query(`SELECT USUARIOS.id, USUARIOS.matricula, USUARIOS.nome, USUARIOS.aposentado, PARCELAMENTOS.valor_total, PARCELAMENTOS.qtd_parcelas, PARCELAMENTOS.valor_parcela, COUNT(*) as qtd_parcelas_pagas, DATE_FORMAT(PARCELAMENTOS.data_inicio, '%m/%d/%Y') as data_inicio, CONVENIOS.nome_convenio FROM USUARIOS, PARCELAMENTOS, PAGAMENTOS, CONVENIOS WHERE USUARIOS.id = PARCELAMENTOS.id_usuario AND PAGAMENTOS.id_parcelamento = PARCELAMENTOS.id AND CONVENIOS.id = PARCELAMENTOS.id_convenio ${req.query.nome ? "AND USUARIOS.nome LIKE " + "'" + req.query.nome + "%'" : ""} GROUP BY PAGAMENTOS.id_parcelamento ORDER BY USUARIOS.nome;`, (error, result, fields) => {
+            con.query(`SELECT USUARIOS.id, USUARIOS.matricula, USUARIOS.nome, USUARIOS.aposentado, PARCELAMENTOS.valor_total, PARCELAMENTOS.qtd_parcelas, PARCELAMENTOS.valor_parcela, COUNT(*) as qtd_parcelas_pagas, DATE_FORMAT(PARCELAMENTOS.data_inicio, '%d/%m/%Y') as data_inicio, CONVENIOS.nome_convenio FROM USUARIOS, PARCELAMENTOS, PAGAMENTOS, CONVENIOS WHERE USUARIOS.id = PARCELAMENTOS.id_usuario AND PAGAMENTOS.id_parcelamento = PARCELAMENTOS.id AND CONVENIOS.id = PARCELAMENTOS.id_convenio ${req.query.nome ? "AND USUARIOS.nome LIKE " + "'" + req.query.nome + "%'" : ""} GROUP BY PAGAMENTOS.id_parcelamento ORDER BY USUARIOS.nome;`, (error, result, fields) => {
               if(error){
                   res.render("pages/parcelamentos/listar-parcelamentos", {error_msg: `Ocorreu um erro: ${error}`});
                   con.end();
@@ -141,7 +159,7 @@ router.get("/pagamentos", async (req, res) => {
       if(error){
         res.render("pages/pagamentos/listar-pagamentos", {error_msg: `Ocorreu um erro: ${error}`});
       } else {
-          con.query(`SELECT USUARIOS.id, USUARIOS.matricula, USUARIOS.nome, PARCELAMENTOS.valor_total, PARCELAMENTOS.id AS id_parcelamento, PARCELAMENTOS.qtd_parcelas, PARCELAMENTOS.valor_parcela, PAGAMENTOS.pago, DATE_FORMAT(PAGAMENTOS.data_pagamento, '%m/%d/%Y') as data_pagamento, PAGAMENTOS.id AS id_pagamento, CONVENIOS.nome_convenio, DATE_FORMAT(PARCELAMENTOS.data_inicio, '%m/%d/%Y') as data_inicio FROM USUARIOS, PARCELAMENTOS, PAGAMENTOS, CONVENIOS WHERE USUARIOS.id = PARCELAMENTOS.id_usuario AND PAGAMENTOS.id_parcelamento = PARCELAMENTOS.id AND CONVENIOS.id = PARCELAMENTOS.id_convenio ${req.query.nome ? "AND USUARIOS.nome LIKE " + "'" + req.query.nome + "%'" : ""} ORDER BY PAGAMENTOS.data_pagamento DESC`, (error, result, fields) => {
+          con.query(`SELECT USUARIOS.id, USUARIOS.matricula, USUARIOS.nome, PARCELAMENTOS.valor_total, PARCELAMENTOS.id AS id_parcelamento, PARCELAMENTOS.qtd_parcelas, PARCELAMENTOS.valor_parcela, PAGAMENTOS.pago, DATE_FORMAT(PAGAMENTOS.data_pagamento, '%d/%m/%Y') as data_pagamento, PAGAMENTOS.id AS id_pagamento, CONVENIOS.nome_convenio, DATE_FORMAT(PARCELAMENTOS.data_inicio, '%d/%m/%Y') as data_inicio FROM USUARIOS, PARCELAMENTOS, PAGAMENTOS, CONVENIOS WHERE USUARIOS.id = PARCELAMENTOS.id_usuario AND PAGAMENTOS.id_parcelamento = PARCELAMENTOS.id AND CONVENIOS.id = PARCELAMENTOS.id_convenio ${req.query.nome ? "AND USUARIOS.nome LIKE " + "'" + req.query.nome + "%'" : ""} ORDER BY PAGAMENTOS.data_pagamento DESC`, (error, result, fields) => {
               if(error){
                   res.render("pages/pagamentos/listar-pagamentos", {error_msg: `Ocorreu um erro: ${error}`});
                   con.end();
@@ -177,7 +195,7 @@ router.get("/pagamentos/:id", async (req, res) => {
       if(error){
           res.render("pages/pagamentos/listar-pagamentos", {error_msg: `Ocorreu um erro: ${error}`});
       } else {
-          con.query(`SELECT USUARIOS.id, USUARIOS.matricula, USUARIOS.nome, PARCELAMENTOS.valor_total, PARCELAMENTOS.id AS id_parcelamento , PARCELAMENTOS.qtd_parcelas, PARCELAMENTOS.valor_parcela, PAGAMENTOS.id AS id_pagamento, PAGAMENTOS.pago, DATE_FORMAT(PAGAMENTOS.data_pagamento, '%m/%d/%Y') as data_pagamento, CONVENIOS.nome_convenio, DATE_FORMAT(PARCELAMENTOS.data_inicio, '%m/%d/%Y') as data_inicio FROM USUARIOS, PARCELAMENTOS, PAGAMENTOS, CONVENIOS WHERE USUARIOS.id = PARCELAMENTOS.id_usuario AND PAGAMENTOS.id_parcelamento = PARCELAMENTOS.id AND CONVENIOS.id = PARCELAMENTOS.id_convenio AND USUARIOS.id = ${req.params.id} ORDER BY PAGAMENTOS.data_pagamento DESC`, (error, result, fields) => {
+          con.query(`SELECT USUARIOS.id, USUARIOS.matricula, USUARIOS.nome, PARCELAMENTOS.valor_total, PARCELAMENTOS.id AS id_parcelamento , PARCELAMENTOS.qtd_parcelas, PARCELAMENTOS.valor_parcela, PAGAMENTOS.id AS id_pagamento, PAGAMENTOS.pago, DATE_FORMAT(PAGAMENTOS.data_pagamento, '%d/%m/%Y') as data_pagamento, CONVENIOS.nome_convenio, DATE_FORMAT(PARCELAMENTOS.data_inicio, '%d/%m/%Y') as data_inicio FROM USUARIOS, PARCELAMENTOS, PAGAMENTOS, CONVENIOS WHERE USUARIOS.id = PARCELAMENTOS.id_usuario AND PAGAMENTOS.id_parcelamento = PARCELAMENTOS.id AND CONVENIOS.id = PARCELAMENTOS.id_convenio AND USUARIOS.id = ${req.params.id} ORDER BY PAGAMENTOS.data_pagamento DESC`, (error, result, fields) => {
               if(error){
                   res.render("pages/pagamentos/listar-pagamentos", {error_msg: `Ocorreu um erro: ${error}`});
                   con.end();
@@ -198,10 +216,16 @@ router.get("/pagamentos/:id", async (req, res) => {
                   })
 
                   console.log(data);
-                  const msg = req.flash("success_msg");
-                  console.log(msg);
+                  const success_msg = res.locals.success_msg;
+                  const error_msg = res.locals.error_msg;
+                  const warning_msg = res.locals.warning_msg;
                   
-                  res.render("pages/pagamentos/listar-pagamentos", {data});
+                  res.render("pages/pagamentos/listar-pagamentos", {
+                    data,
+                    success_msg,
+                    error_msg,
+                    warning_msg
+                  });
                   con.end();
               };
           });
@@ -214,7 +238,7 @@ const stream = require('stream');
 router.get("/relatorio", (req, res) => {
   const con = createSQLConnection();
 
-  con.query(`SELECT USUARIOS.id, USUARIOS.matricula, USUARIOS.nome, USUARIOS.aposentado, PARCELAMENTOS.valor_total, PARCELAMENTOS.qtd_parcelas, PARCELAMENTOS.valor_parcela, COUNT(*) as qtd_parcelas_pagas, DATE_FORMAT(PARCELAMENTOS.data_inicio, '%m/%d/%Y') as data_inicio, CONVENIOS.nome_convenio FROM USUARIOS, PARCELAMENTOS, PAGAMENTOS, CONVENIOS WHERE USUARIOS.id = PARCELAMENTOS.id_usuario AND PAGAMENTOS.id_parcelamento = PARCELAMENTOS.id AND CONVENIOS.id = PARCELAMENTOS.id_convenio GROUP BY PAGAMENTOS.id_parcelamento ORDER BY USUARIOS.nome;`, (error, result, fields) => {
+  con.query(`SELECT USUARIOS.id, USUARIOS.matricula, USUARIOS.nome, USUARIOS.aposentado, PARCELAMENTOS.valor_total, PARCELAMENTOS.qtd_parcelas, PARCELAMENTOS.valor_parcela, COUNT(*) as qtd_parcelas_pagas, DATE_FORMAT(PARCELAMENTOS.data_inicio, '%d/%m/%Y') as data_inicio, CONVENIOS.nome_convenio FROM USUARIOS, PARCELAMENTOS, PAGAMENTOS, CONVENIOS WHERE USUARIOS.id = PARCELAMENTOS.id_usuario AND PAGAMENTOS.id_parcelamento = PARCELAMENTOS.id AND CONVENIOS.id = PARCELAMENTOS.id_convenio GROUP BY PAGAMENTOS.id_parcelamento ORDER BY USUARIOS.nome;`, (error, result, fields) => {
       if(error){
           res.render("pages/parcelamentos", {error_msg: `Ocorreu um erro: ${error}`});
           con.end();
@@ -295,6 +319,7 @@ router.post("/remover-pagamento", async (req, res) => {
                     error_msg: `Ocorreu um erro: ${error}`
                   })
                 } else{
+                  req.flash("warning_msg", `Você removeu um pagamento de ${req.body.nome}`)
                   res.redirect(req.get("referer"))
                 };
                 con.end();

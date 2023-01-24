@@ -349,3 +349,14 @@ function appendPageNumber(index, pagination){
 
     pagination.paginationNumbers.appendChild(newBtnNumber);
 }
+
+
+
+
+
+
+
+
+if(document.querySelector(".folder-container")){
+    
+}
