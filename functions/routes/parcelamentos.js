@@ -1,12 +1,9 @@
 const router = require("express").Router();
-const fs = require('fs');
 require("dotenv").config();
 
 
 // IMPORT FUNCTIONS
 const { convertISODATE, createSQLConnection, convertBooleanToString, convertCPF } = require('./functions.js');
-
-
 
 
 // CREATE
@@ -18,16 +15,15 @@ router.post("/novo-pagamento", async (req, res) => {
             res.render("pages/pagamentos/listar-pagamentos", {error_msg: `Ocorreu um erro: ${error}`});
         } else{
             const createNewDate = convertISODATE();
-            console.log("CURRENT DATE: " + createNewDate)
 
             con.query(`INSERT INTO PAGAMENTOS VALUES (DEFAULT, ${req.body.id_parcelamento}, DEFAULT, '${createNewDate}')`, (error, result, field) => {
                 if(error){
-                  res.render("pages/pagamentos/listar-pagamentos", {error_msg: error});
+                  res.render("pages/pagamentos/listar-pagamentos", {error_msg: `Ocorreu um erro: ${error}`});
                 } else{
                   con.end();
                   //res.render("pages/pagamentos/listar-pagamentos", {success_msg: result});
-                  req.flash("success_msg", "Novo pagamento realizado!")
-                  res.redirect(req.get("referer"))
+                  req.flash("success_msg", "Novo pagamento realizado!");
+                  res.redirect(301, req.get("referer"));
                 }
             })
         }
@@ -74,13 +70,14 @@ router.get("/novo-pagamento/:id", async (req, res) => {
                                     parcelamento.valor_parcela = "R$ " + String(parcelamento.valor_parcela).replace(".", ",");
                                     
 
-                                    console.log(parcelamento, usuario, convenio)
-                                    con.end();
+                                    console.log(parcelamento, usuario, convenio);
+
                                     res.render("pages/pagamentos/novo-pagamento", {
                                       parcelamento,
                                       usuario,
                                       convenio
                                     });
+                                    con.end();
                                 };
                             });
                         };
@@ -200,7 +197,9 @@ router.get("/pagamentos/:id", async (req, res) => {
                     select.valor_parcela = Number(select.valor_parcela).toFixed(2);
                   })
 
-                  console.log(data)
+                  console.log(data);
+                  const msg = req.flash("success_msg");
+                  console.log(msg);
                   
                   res.render("pages/pagamentos/listar-pagamentos", {data});
                   con.end();

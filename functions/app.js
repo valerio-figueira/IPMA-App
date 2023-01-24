@@ -6,7 +6,6 @@ const cors = require("cors");
 const Usuarios = require("./routes/usuarios");
 const Parcelamentos = require("./routes/parcelamentos");
 const session = require("express-session");
-const bodyParser = require('body-parser');
 const flash = require('connect-flash');
 require("dotenv").config();
 
@@ -18,33 +17,31 @@ require("dotenv").config();
         methods: ["GET"]
     }));
 
+
+    // JSON CONFIG IN MIDDLEWARES
+    app.use(express.urlencoded({extended: true}));
+    app.use(express.json());
+
     // Session
     app.use(session({
-        secret: 'ipmaserver',
-        resave: true,
+        secret: 'applicationserver',
+        resave: false,
         saveUninitialized: true,
         cookie: {
             sameSite: "None",
-            secure: true,
-            maxAge: 24 * 60 * 60 * 1000 // 24 hours
+            maxAge: 1000 * 60 * 60 * 24,
         }
     }))
 
-
     app.use(flash());
+
     app.use((req, res, next) => {
-        // res.locals serve para criar variáveis globais
+        // GLOBAL VARIABLES
         res.locals.success_msg = req.flash("success_msg");
         res.locals.error_msg = req.flash("error_msg");
         next();
     });
 
-    // JSON CONFIG IN MIDDLEWARES
-    // Body Parser
-    app.use(bodyParser.urlencoded({
-        extended: true,
-    }));
-    app.use(bodyParser.json());
 
 
 
@@ -68,13 +65,24 @@ require("dotenv").config();
 
 
 
+router.get("/", (req, res) => {
+    req.flash("success_msg", "O Flash funcionou!");
+    
+    req.session.regenerate((err) => {
+        if (err) next(err);
+        req.session.msg = "Hello, world!"
 
-router.get("/", cors(), (req, res) => {
-    res.render("pages/index");
+        req.session.save((err) => {
+            if(err) next(err);
+            res.redirect("/message");
+        })
+    })
 })
 
-router.get("/painel", cors(), (req, res) => {
-    res.render("pages/painel");
+router.get("/message", (req, res) => {
+    if(req.session.msg){
+        res.send(req.session.msg)
+    }
 });
 
 
@@ -82,5 +90,9 @@ router.get("/painel", cors(), (req, res) => {
 
 
 app.use("/", router);
-
+/*
+app.listen(3000, () => {
+    console.log("Server is up...")
+})
+*/
 module.exports.handler = serverless(app);
