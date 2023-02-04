@@ -272,7 +272,7 @@ nav.navbar .dropdown:hover .dropbtn {
 
 main.container{
     display: grid;
-    grid-template-columns: 1fr 300px;
+    grid-template-columns: 1fr 320px;
 
     padding: 1rem 1%;    
 }
@@ -438,8 +438,9 @@ form.td-form{
     gap: 1rem;
 }
 .info-box p{
+    background-color: lightgray;
     color: var(--font-color);
-    border: 1px solid lightgray;
+    border: 1px solid #929aa7;
     padding: .7rem;
 }
 .info-box p:hover{
@@ -594,8 +595,18 @@ form.filtro button.btn{
     margin: 0 .5rem;
     font-size: .9rem;
 }
-
-
+form.filtro input{
+    font-size: .9rem;
+    padding: .5rem;
+    outline: 2px solid transparent;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+}
+form.filtro input:focus{
+    font-size: .9rem;
+    padding: .5rem;
+    outline: 2px solid var(--light-green);
+}
 
 
 
@@ -680,9 +691,36 @@ form.filtro button.btn{
 
 
 
-
-
-
+.folder-container{
+    margin: 1.5rem 0;
+}
+.folder-container .folder-btn{
+    text-align: left;
+    font-size: 1.3rem;
+    color: var(--white);
+    background-color: var(--dark-gray);
+    width: 100%;
+    padding: 1rem;
+    border: none;
+    cursor: pointer;
+}
+.folder-container .folder-btn:hover{
+    background-color: var(--font-hover);
+}
+.folder-container .folder-content{
+    display: none;
+    padding: 1rem 0;
+    margin: 0;
+    background-color: #ebebeb;
+}
+.folder-container .folder-content p{
+    color: var(--font-color);
+    margin: 0;
+    padding: 1rem 1rem .5rem;
+}
+.folder-container .folder-content.open{
+    display: block;
+}
 
 
 

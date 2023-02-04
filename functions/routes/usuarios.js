@@ -205,74 +205,48 @@ router.get("/cadastrar-dependente/:id", async (req, res) => {
 router.get("/", async (req, res) => {
     const con = createSQLConnection();
 
-    if(req.query.nome){
-        con.query(`SELECT * FROM USUARIOS WHERE nome LIKE '${req.query.nome}%'`, (error, result, fields) => {
-            if(error){
-                res.render("pages/usuarios/listar-usuarios", {error_msg: `Ocorreu um erro: ${error}`});
-                con.end();
-            } else{
-                const usuarios = result;
-                
+    con.connect((error) => {
+        if(error){
+            res.render("pages/usuarios/listar-usuarios", {
+                error_msg: `Ocorreu um erro: ${error}`
+            });
+        } else{
+            con.query(`SELECT *, DATE_FORMAT(data_nasc, '%d/%m/%Y') as data_nasc, DATE_FORMAT(data_exp, '%d/%m/%Y') as data_exp, DATE_FORMAT(data_cadastro, '%d/%m/%Y') as data_cadastro FROM USUARIOS ${req.query.nome ? "WHERE nome LIKE " + "'" + req.query.nome + "%'": ""} ${req.query.tipo == "ativos" ? "WHERE aposentado=0" : ""} ${req.query.tipo == "aposentados" ? "WHERE aposentado=1" : ""}`, (error, result) => {
+                if(error){
+                    res.render("pages/usuarios/listar-usuarios", {
+                        error_msg: `Ocorreu um erro: ${error}`
+                    });
+                    con.end();
+                } else{
+                    const usuarios = result;
+                    console.log(usuarios)
 
-                // CONVERT BOOLEAN NUMBER TO STRING
-                usuarios.forEach(usuario => {
-                    usuario.aposentado = convertBooleanToString(usuario.aposentado)
-                    usuario.data_cadastro = new Date(usuario.data_cadastro)
-                    .toLocaleDateString();
-                    usuario.data_nasc = new Date(usuario.data_nasc)
-                    .toLocaleDateString();                    
-                })
+                    usuarios.forEach(usuario => {
+                        // CONVERT BOOLEAN NUMBER TO STRING
+                        usuario.aposentado = convertBooleanToString(usuario.aposentado);
+                        /*
+                        usuario.data_cadastro = new Date(usuario.data_cadastro)
+                        .toLocaleString();
 
-                console.log(result)
+                        if(usuario.data_exp != null){
+                        usuario.data_exp = new Date(usuario.data_exp)
+                        .toLocaleDateString();
+                        }
+                        if(usuario.data_nasc != null){
+                        usuario.data_nasc = new Date(usuario.data_nasc)
+                        .toLocaleDateString();
+                        }
+                        */
+                    })
 
-                res.render("pages/usuarios/listar-usuarios", {usuarios});
-                con.end();
-            };
-        });
-    } else {
-        con.connect((error) => {
-            if(error){
-                res.render("pages/usuarios/listar-usuarios", {
-                    error_msg: `Ocorreu um erro: ${error}`
-                });
-            } else{
-                con.query("SELECT * FROM USUARIOS", (error, result, fields) => {
-                    if(error){
-                        res.render("pages/usuarios/listar-usuarios", {
-                            error_msg: `Ocorreu um erro: ${error}`
-                        });
-                        con.end();
-                    } else{
-                        const usuarios = result;
-                        console.log(usuarios)
-    
-                        usuarios.forEach(usuario => {
-                          // CONVERT BOOLEAN NUMBER TO STRING
-                          usuario.aposentado = convertBooleanToString(usuario.aposentado);
-    
-                          usuario.data_cadastro = new Date(usuario.data_cadastro)
-                          .toLocaleString();
-
-                          if(usuario.data_exp != null){
-                            usuario.data_exp = new Date(usuario.data_exp)
-                            .toLocaleDateString();
-                          }
-                          if(usuario.data_nasc != null){
-                            usuario.data_nasc = new Date(usuario.data_nasc)
-                            .toLocaleDateString();
-                          }
-    
-                        })
-    
-                        res.render("pages/usuarios/listar-usuarios", {
-                            usuarios
-                        });
-                        con.end();
-                    };
-                });
-            };
-        });
-    };
+                    res.render("pages/usuarios/listar-usuarios", {
+                        usuarios
+                    });
+                    con.end();
+                };
+            });
+        };
+    });
 });
 
 
@@ -286,7 +260,7 @@ router.get("/consultar/:id", async (req, res) => {
                 error_msg: `Ocorreu um erro: ${error}`
             });
         } else{
-            con.query(`SELECT * FROM USUARIOS WHERE id=${req.params.id}`, (error, result, fields) => {
+            con.query(`SELECT * FROM USUARIOS WHERE id=${req.params.id}`, (error, result) => {
                 if(error){
                     res.render("pages/usuarios/detalhes-usuario", {
                         error_msg: `Ocorreu um erro: ${error}`
@@ -306,9 +280,9 @@ router.get("/consultar/:id", async (req, res) => {
                     // INSERTING DOTS AND DASH INTO CPF NUMBERS
                     usuario.cpf = convertCPF(usuario.cpf);
 
-                    console.log(usuario)
+                    console.log(usuario);
 
-                    con.query(`SELECT * FROM DEPENDENTES WHERE id_titular=${req.params.id}`, (error, result, fields) => {
+                    con.query(`SELECT * FROM DEPENDENTES WHERE id_titular=${req.params.id}`, (error, result) => {
                         if(error){
                             res.render("pages/usuarios/detalhes-usuario", {
                                 error_msg: `Houve uma falha: ${error}`

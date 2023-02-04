@@ -69,7 +69,4 @@ function convertBooleanToString(aposentado){
     return aposentado;
 }
 
-
-
-
 module.exports = { convertCPF, convertDATE, convertISODATE, createSQLConnection, convertBooleanToString, createNewDate }

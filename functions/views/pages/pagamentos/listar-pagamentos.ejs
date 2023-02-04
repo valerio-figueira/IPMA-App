@@ -19,6 +19,14 @@
 
                 <a href="/parcelamentos" class="btn">Mostrar Parcelamentos</a>
 
+                <% if(typeof usuario == 'object') { %>
+                    <div class="info-box">
+                        <p>Matrícula: <%= usuario.matricula %></p>
+                        <p>Usuário: <%= usuario.nome %></p>
+                        <p>Convênio: <%= usuario.nome_convenio %></p>
+                    </div>
+                <% } %>
+
                 <% if(typeof data == 'object') { %>
                     <table class="pagamentos">
                         <thead>

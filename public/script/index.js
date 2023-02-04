@@ -358,5 +358,14 @@ function appendPageNumber(index, pagination){
 
 
 if(document.querySelector(".folder-container")){
-    
-}
+    const folderBtn = document.querySelector(".folder-btn");
+    const folderContent = document.querySelector(".folder-content");
+
+    folderBtn.addEventListener("click", () => {
+        if(!folderContent.matches(".open")){
+            folderContent.classList.add("open");
+        } else{
+            folderContent.classList.remove("open");
+        };
+    });
+};

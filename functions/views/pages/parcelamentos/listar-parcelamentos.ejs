@@ -54,11 +54,14 @@
                                     <a href="/parcelamentos/atualizar" class="btn fa fa-database table-anchor"></a>
                                 </td>
                                 <td class="td-anchor">
-                                    <a href="/parcelamentos/pagamentos/<%= usuario.id %>" class="btn fa fa-external-link-square table-anchor"></a>
+                                    <form action="/parcelamentos/pagamentos/<%= usuario.id %>" method="GET" class="td-form">
+                                        <input type="hidden" value="<%= usuario.id_parcelamento %>" name="id_parcelamento">
+                                        <button class="btn fa fa-external-link-square table-anchor"></button>
+                                    </form>
                                 </td>
                                 <td class="td-anchor">
                                     <a href="/parcelamentos/pagamentos/<%= usuario.id %>" class="btn fa fa-close remove table-anchor"></a>
-                                </td>
+                                </td>z
                             </tr>
                         <% }); %>
                         <tr class="total-row">
