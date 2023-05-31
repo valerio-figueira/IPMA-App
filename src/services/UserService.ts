@@ -1,13 +1,19 @@
+import { IUser } from "../interfaces/IUser";
+import UserSchema from "../model/UserSchema";
 import UserRepository from "../repositories/UserRepository";
 
 export default class UserService {
-    userService: object;
+    userRepository: UserRepository;
 
     constructor() {
-        this.userService = new UserRepository();
+        this.userRepository = new UserRepository;
     }
 
-    async Create() {}
+    async Create(body: IUser) {
+        const newUser = new UserSchema(body);
+
+        return this.userRepository.Create(newUser);
+    }
 
     async ReadAll() {}
 

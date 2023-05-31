@@ -2,14 +2,15 @@ import { Request, Response } from "express";
 import UserService from "../services/UserService";
 
 export default class UserController {
-    userController: object;
+    userService: UserService;
 
     constructor() {
-        this.userController = new UserService();
+        this.userService = new UserService();
     }
 
     async Create(req: Request, res: Response) {
         try {
+            await this.userService.Create(req.body);
 
         } catch (error) {
             res.status(500).json({error: error.message})
