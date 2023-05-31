@@ -127,7 +127,7 @@ router.get("/", (req, res) => {
                   
 
                   // SUM ALL ROW PRICES
-                  let totalPrice = 0;
+                  let totalPrice: number | string  = 0;
 
                   data.forEach(select => {
                     
@@ -288,7 +288,7 @@ router.get("/relatorio", (req, res) => {
           
 
           // SUM ALL ROW PRICES
-          let totalPrice = 0;
+          let totalPrice: number | string = 0;
 
           data.forEach(select => {
             
@@ -370,4 +370,4 @@ router.post("/remover-pagamento", async (req, res) => {
 });
 
 
-module.exports = router;
+export default router;

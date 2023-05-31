@@ -1,23 +1,24 @@
-const router = require("express").Router();
+import { Router } from "express";
 
 // IMPORT FUNCTIONS
-const { convertCPF, convertDATE, convertISODATE, createSQLConnection, convertBooleanToString } = require('./functions.js');
+import { convertCPF, convertDATE, convertISODATE, createSQLConnection, convertBooleanToString } from '../Utils/Functions';
+import UserSchema from "../model/UserSchema";
 
-
+const router = Router();
 
 
 // CREATE
 router.post("/", async (req, res) => {})
 
 router.post("/cadastrar-usuario", async (req, res) => {
-    const errors = [];
+    const errors: { text: string }[] = [];
     const regex = /[0-9]/;
     const alphabeth = /[A-z]/;
     const alphnumeric = /[A-z-0-9]/;
 
 
     if(!(typeof req.body.matricula == undefined || req.body.matricula == null || req.body.matricula == "")){
-        if(!regex.test(req.body.matricula) && !req.body.matricula == ""){
+        if(!regex.test(req.body.matricula)){
             errors.push({text: "A matrícula deve conter apenas números"})
         }
     }
@@ -36,7 +37,7 @@ router.post("/cadastrar-usuario", async (req, res) => {
         errors.push({text: "Preencha o CPF"})
     }
 
-    if(typeof req.body.sexo == undefined || req.body.sexo == null | req.body.sexo == ""){
+    if(typeof req.body.sexo == undefined){
         errors.push({text: "Selecione o sexo"})
     }
 
@@ -48,7 +49,7 @@ router.post("/cadastrar-usuario", async (req, res) => {
 
 
 
-    if(!regex.test(req.body.cartaoSUS) && !req.body.cartaoSUS == ""){
+    if(!regex.test(req.body.cartaoSUS)){
         errors.push({text: "O cartão SUS deve conter apenas números"})
     }
 
@@ -95,41 +96,8 @@ router.post("/cadastrar-usuario", async (req, res) => {
         // REMOVING DASH AND DOTS FROM CPF INPUT
         req.body.cpf = req.body.cpf.replaceAll(".", "");
         req.body.cpf = req.body.cpf.replace("-", "");
-
-
-        // TO UPPERCASE
-        req.body.nome = req.body.nome.toUpperCase();
-        req.body.identidade = req.body.identidade.toUpperCase();
-        req.body.orgaoEmissor = req.body.orgaoEmissor.toUpperCase();
-        req.body.endereco = req.body.endereco.toUpperCase();
-        req.body.estadoCivil = req.body.estadoCivil.toUpperCase();
-        req.body.bairro = req.body.bairro.toUpperCase();
-        req.body.cidade = req.body.cidade.toUpperCase();
-        req.body.sexo = req.body.sexo.toUpperCase();
-        req.body.nomeMae = req.body.nomeMae.toUpperCase();
-        req.body.nomePai = req.body.nomePai.toUpperCase();
-
         
-        const newUser = {
-            matricula: req.body.matricula,
-            nome: req.body.nome,
-            identidade: req.body.identidade,
-            data_exp: req.body.dataExp,
-            orgao_emissor: req.body.orgaoEmissor,
-            cpf: req.body.cpf,
-            sexo: req.body.sexo,
-            estado_civil: req.body.estadoCivil,
-            data_nasc: req.body.dataNasc,
-            cartao_sus: req.body.cartaoSUS,
-            endereco: req.body.endereco,
-            numero_endereco: req.body.numeroEnd,
-            bairro: req.body.bairro,
-            cidade: req.body.cidade,
-            nome_mae: req.body.nomeMae,
-            nome_pai: req.body.nomePai,
-            aposentado: req.body.aposentado,
-            data_cadastro: convertISODATE()
-        }
+        const newUser = new UserSchema(req.body);
 
         console.log(newUser);
         
@@ -325,4 +293,4 @@ router.patch("/:id", async (req, res) => {})
 router.delete("/:id", async (req, res) => {})
 
 
-module.exports = router;
+export default router

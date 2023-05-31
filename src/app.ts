@@ -1,15 +1,15 @@
-const express = require("express");
-const app = express();
-const serverless = require("serverless-http");
-const path = require("path");
-const cors = require("cors");
-const Usuarios = require("./routes/usuarios");
-const Parcelamentos = require("./routes/parcelamentos");
-const session = require("express-session");
-const flash = require('connect-flash');
+import express from "express";
+import path from "path";
+import Usuarios from './routes/Users';
+import Parcelamentos from './routes/parcelamentos';
+import session from 'express-session';
+import flash from 'connect-flash';
+import cors from 'cors';
+
 require("dotenv").config();
 
 
+const app = express();
 
     // MIDDLEWARE TO ENABLE CORS (Cross Origin Resource Sharing)
     app.use(cors({
@@ -28,7 +28,7 @@ require("dotenv").config();
         resave: false,
         saveUninitialized: true,
         cookie: {
-            sameSite: "None",
+            sameSite: "none",
             maxAge: 1000 * 60 * 60 * 24,
         }
     }))
@@ -67,7 +67,7 @@ require("dotenv").config();
 
 
 
-router.get("/", (req, res) => {
+router.get("/", (req, res, next) => {
     req.flash("success_msg", "O Flash funcionou!");
     
     req.session.regenerate((err) => {
@@ -99,6 +99,4 @@ app.use("/", router);
 
 app.listen(3000, () => {
     console.log("Server is up...")
-})
-
-//module.exports.handler = serverless(app);
+});

@@ -1,4 +1,4 @@
-const mysql = require("mysql");
+import mysql from 'mysql';
 require("dotenv").config();
 
 
@@ -6,7 +6,6 @@ const DB_USER = process.env.DB_USER;
 const DB_PASSWORD = process.env.DB_PASSWORD;
 const DB_NAME = process.env.DB_NAME;
 const HOST_NAME = process.env.HOST_NAME;
-
 
 
 // FUNCTIONS
@@ -69,4 +68,4 @@ function convertBooleanToString(aposentado){
     return aposentado;
 }
 
-module.exports = { convertCPF, convertDATE, convertISODATE, createSQLConnection, convertBooleanToString, createNewDate }
+export { convertCPF, convertDATE, convertISODATE, createSQLConnection, convertBooleanToString, createNewDate }
