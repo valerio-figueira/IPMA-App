@@ -20,7 +20,7 @@ function createSQLConnection(){
     return connection;
 }
 
-function convertCPF(cpf){
+function convertCPF(cpf: any){
     const cpfArray = cpf.split("");
     cpfArray.splice(3, 0, ".");
     cpfArray.splice(7, 0, ".");
@@ -30,7 +30,7 @@ function convertCPF(cpf){
     return cpf;
 }
 
-function convertDATE(dates){
+function convertDATE(dates: any){
     for(let date of dates){
         date = new Date(date).toLocaleDateString();
     }
@@ -58,7 +58,7 @@ function createNewDate(){
     return convertedDate;
 }
 
-function convertBooleanToString(aposentado){
+function convertBooleanToString(aposentado: any){
     if(aposentado == 1){
         aposentado = "Sim";
     } else{

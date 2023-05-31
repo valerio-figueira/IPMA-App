@@ -10,16 +10,27 @@ export default class UserController {
 
     async Create(req: Request, res: Response) {
         try {
-            await this.userService.Create(req.body);
-
-        } catch (error) {
-            res.status(500).json({error: error.message})
+            res.status(201).json(await this.userService.Create(req.body))
+        } catch (error: any) {
+            res.status(500).json({ error: error.message })
         }
     }
 
-    async ReadAll(req: Request, res: Response) { }
+    async ReadAll(req: Request, res: Response) {
+        try {
+            res.status(200).json(await this.userService.ReadAll(req.query))
+        } catch (error: any) {
+            res.status(500).json({ error: error.message })
+        }
+    }
 
-    async ReadOne(req: Request, res: Response) { }
+    async ReadOne(req: Request, res: Response) { 
+        try {
+            res.status(200).json(await this.userService.ReadOne(req.params.id))
+        } catch (error: any) {
+            res.status(500).json({ error: error.message })
+        }
+    }
 
     async Update(req: Request, res: Response) { }
 

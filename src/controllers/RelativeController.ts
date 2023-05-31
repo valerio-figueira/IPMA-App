@@ -11,24 +11,24 @@ export default class RelativeController {
 
     async Create(req: Request, res: Response) {
         try {
-            await this.relativeService.Create(req.body);
-        } catch (error) {
+            res.status(201).json(await this.relativeService.Create(req.body))
+        } catch (error: any) {
             res.status(500).json({ error: error.message })
         }
     }
 
     async ReadAll(req: Request, res: Response) {
         try {
-            await this.relativeService.ReadAll(req.params.holder)
-        } catch (error) {
+            res.status(200).json(await this.relativeService.ReadAll(req.params.holder))
+        } catch (error: any) {
             res.status(500).json({ error: error.message })
         }
     }
 
     async ReadOne(req: Request, res: Response) {
         try {
-            await this.relativeService.ReadOne(req.params.holder, req.params.relative)
-        } catch (error) {
+            res.status(200).json(await this.relativeService.ReadOne(req.params.holder, req.params.relative))
+        } catch (error: any) {
             res.status(500).json({ error: error.message })
         }
     }

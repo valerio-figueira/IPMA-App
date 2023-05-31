@@ -9,6 +9,7 @@
   "author": "Valerio Figueira",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.20.2",
     "connect-flash": "^0.1.1",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
@@ -21,6 +22,7 @@
     "typescript": "^5.0.4"
   },
   "devDependencies": {
+    "@types/body-parser": "^1.19.2",
     "@types/connect-flash": "^0.0.37",
     "@types/cors": "^2.8.13",
     "@types/dotenv": "^8.2.0",

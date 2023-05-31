@@ -19,7 +19,7 @@ export default class RelativeService {
 
     async ReadOne(holder: string, relative: string) {
         return this.relativeRepository.ReadOne(holder, relative);
-     }
+    }
 
     async Update() { }
 

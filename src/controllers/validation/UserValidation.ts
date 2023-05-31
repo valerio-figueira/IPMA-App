@@ -8,7 +8,7 @@ export default class UserValidation {
     static validateUserBody(body: IUser) {
 
     }
-
+/*
     static validateMatricula(matricula: string) {
         if (!(typeof matricula == undefined || matricula == null || matricula == "")) {
             if (!regex.test(matricula)) {
@@ -70,5 +70,5 @@ export default class UserValidation {
             }
         }
     }
-
+*/
 }

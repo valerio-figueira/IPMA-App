@@ -9,38 +9,43 @@ const relativeController = new RelativeController();
 const router = Router();
 
 
-// CREATE
-router.post("/cadastrar-usuario", async (req, res) => {
-    userController.Create(req, res);
-});
-
-
 // FORM TO CREATE NEW
 router.get("/cadastrar-usuario", async (req, res) => {
     res.render("pages/usuarios/novo-usuario");
 });
 
 
+// HOLDERS ROUTES
+
+// CREATE
+router.post("/", async (req, res) => {
+    userController.Create(req, res);
+});
+
 // READ
 router.get("/", async (req, res) => {
     userController.ReadAll(req, res);
 });
 
-
 // READ ONE
-router.get("/consultar/:id", async (req, res) => {
-
+router.get("/:id", async (req, res) => {
+    userController.ReadOne(req, res);
 });
 
-
-
 // UPDATE
-// PATCH ATUALIZA UM CAMPO INDIVIDUAL
-router.patch("/:id", async (req, res) => {})
+router.put("/:id", async (req, res) => {
+    userController.Update(req, res);
+})
 
+// PATCH ATUALIZA UM CAMPO INDIVIDUAL
+router.patch("/:id", async (req, res) => {
+
+})
 
 // DELETE
-router.delete("/:id", async (req, res) => {})
+router.delete("/:id", async (req, res) => {
+    userController.Delete(req, res);
+})
 
 
 

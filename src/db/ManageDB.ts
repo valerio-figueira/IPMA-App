@@ -1,4 +1,4 @@
-import mysql from 'mysql';
+import mysql, { FieldInfo, packetCallback } from 'mysql';
 
 const DB_USER = process.env.DB_USER;
 const DB_PASSWORD = process.env.DB_PASSWORD;
@@ -6,40 +6,34 @@ const DB_NAME = process.env.DB_NAME;
 const HOST_NAME = process.env.HOST_NAME;
 
 export default class ManageDB {
-    
-    static createSQLConnection() {
-        const connection = mysql.createConnection({
+
+    createConnection() {
+        return mysql.createConnection({
             host: HOST_NAME,
-            database: DB_NAME,
             user: DB_USER,
-            password: DB_PASSWORD
+            password: DB_PASSWORD,
+            database: DB_NAME,
         });
-    
-        return connection;
     }
 
-    static createQuery(query: string): any {
-        const con = this.createSQLConnection();
+    async createQuery(query: string): Promise<any> {
+        return new Promise((resolve, reject) => {
+            const connection = this.createConnection();
 
-        con.connect((error) => {
-            if(error){
-                throw new Error(`Ocorreu um erro: ${error}`);
-            } else{
-                const body = query;
+            connection.connect((error) => {
+                if (error) {
+                    reject(error);
+                    return;
+                }
 
-                con.query(body, function (error: any, result: any) {
-                    if(error){
-                        con.end();
-                        throw new Error(`Ocorreu um erro: ${error}`);
-                    } else {
-                        con.end();
-                        return {
-                            message: "",
-                            body
-                        };
-                    };
+                connection.query(query, (err: Error, results: packetCallback, fields: FieldInfo) => {
+                    if (err) reject(err);
+                    else resolve(results);
+                    
+                    connection.end();
                 });
-            };
+            });
         });
     }
+
 }

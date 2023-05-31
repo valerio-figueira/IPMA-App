@@ -6,7 +6,7 @@ export default class UserService {
     userRepository: UserRepository;
 
     constructor() {
-        this.userRepository = new UserRepository;
+        this.userRepository = new UserRepository();
     }
 
     async Create(body: IUser) {
@@ -15,9 +15,13 @@ export default class UserService {
         return this.userRepository.Create(newUser);
     }
 
-    async ReadAll() {}
+    async ReadAll(query: any) {
+        return this.userRepository.ReadAll(query)
+    }
 
-    async ReadOne() {}
+    async ReadOne(holder_id: string) {
+        return this.userRepository.ReadOne(holder_id);
+    }
 
     async Update() {}
 
