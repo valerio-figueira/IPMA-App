@@ -12,60 +12,8 @@ router.post("/", async (req, res) => {})
 
 router.post("/cadastrar-usuario", async (req, res) => {
     const errors: { text: string }[] = [];
-    const regex = /[0-9]/;
-    const alphabeth = /[A-z]/;
-    const alphnumeric = /[A-z-0-9]/;
 
-
-    if(!(typeof req.body.matricula == undefined || req.body.matricula == null || req.body.matricula == "")){
-        if(!regex.test(req.body.matricula)){
-            errors.push({text: "A matrícula deve conter apenas números"})
-        }
-    }
-
-    if(typeof req.body.nome == undefined || req.body.nome == null || req.body.nome == ""){
-        errors.push({text: "Preencha o nome"})
-    }
-    if(req.body.nome.length < 10){
-        errors.push({text: "O nome digitado é muito pequeno"})
-    }
-    if(!alphabeth.test(req.body.nome) || regex.test(req.body.nome)){
-        errors.push({text: "O nome não pode conter números ou caracteres especiais"})
-    }
-
-    if(typeof req.body.cpf == undefined || req.body.cpf == null || req.body.cpf == ""){
-        errors.push({text: "Preencha o CPF"})
-    }
-
-    if(typeof req.body.sexo == undefined){
-        errors.push({text: "Selecione o sexo"})
-    }
-
-    if(!(typeof req.body.orgaoEmissor == 'string' || req.body.orgaoEmissor == undefined || req.body.orgaoEmissor == null)){
-        if(!alphabeth.test(req.body.orgaoEmissor)){
-            errors.push({text: "Orgão emissor deve conter apenas letras"})
-        }
-    }
-
-
-
-    if(!regex.test(req.body.cartaoSUS)){
-        errors.push({text: "O cartão SUS deve conter apenas números"})
-    }
-
-    if(!(req.body.bairro == "" || typeof req.body.bairro == undefined || req.body.bairro == null)){
-        if(!(alphnumeric.test(req.body.bairro))){
-            errors.push({text: "O bairro não deve conter caracteres especiais"})
-        }
-    }
-
-
-    if(!(typeof req.body.numeroEnd == "string" || req.body.numeroEnd == undefined || req.body.numeroEnd == null)){
-        if(!regex.test(req.body.numeroEnd)){
-            errors.push({text: "Somente números são permitidos para o número do endereço"})
-        }
-    }
-
+    
     if(errors.length > 0){
         res.render("pages/usuarios/novo-usuario", {errors})
     } else{

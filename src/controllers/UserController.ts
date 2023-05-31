@@ -8,14 +8,20 @@ export default class UserController {
         this.userController = new UserService();
     }
 
-    async Create(req: Request, res: Response) {}
+    async Create(req: Request, res: Response) {
+        try {
 
-    async ReadAll(req: Request, res: Response) {}
+        } catch (error) {
+            res.status(500).json({error: error.message})
+        }
+    }
 
-    async ReadOne(req: Request, res: Response) {}
+    async ReadAll(req: Request, res: Response) { }
 
-    async Update(req: Request, res: Response) {}
+    async ReadOne(req: Request, res: Response) { }
 
-    async Delete(req: Request, res: Response) {}
+    async Update(req: Request, res: Response) { }
+
+    async Delete(req: Request, res: Response) { }
 
 }

@@ -18,5 +18,28 @@ export default class ManageDB {
         return connection;
     }
 
+    static createQuery(query: string): any {
+        const con = this.createSQLConnection();
 
+        con.connect((error) => {
+            if(error){
+                throw new Error(`Ocorreu um erro: ${error}`);
+            } else{
+                const body = query;
+
+                con.query(body, function (error: any, result: any) {
+                    if(error){
+                        con.end();
+                        throw new Error(`Ocorreu um erro: ${error}`);
+                    } else {
+                        con.end();
+                        return {
+                            message: "",
+                            body
+                        };
+                    };
+                });
+            };
+        });
+    }
 }
