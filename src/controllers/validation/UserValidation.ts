@@ -1,74 +1,50 @@
-import { IUser } from "../../interfaces/IUser";
+import { IHolder } from "../../interfaces/IHolder";
 
 export default class UserValidation {
     regex = /[0-9]/;
     alphabeth = /[A-z]/;
     alphnumeric = /[A-z-0-9]/;
 
-    static validateUserBody(body: IUser) {
+    static validateUserBody(body: IHolder) {
 
     }
-/*
-    static validateMatricula(matricula: string) {
-        if (!(typeof matricula == undefined || matricula == null || matricula == "")) {
-            if (!regex.test(matricula)) {
-                { text: "A matrícula deve conter apenas números" }
-            }
-        }
+
+    static validateMatricula(matricula: number) {
+        if(typeof matricula !== 'number') throw new Error('');
+        if(matricula === undefined) throw new Error('');
+        if(matricula === null) throw new Error('');
     }
 
-    static validateNome(nome: string) {
-        if (nome.length < 10) {
-            { text: "O nome digitado é muito pequeno" }
-        }
-        if (typeof nome == undefined || nome == null || nome == "") {
-            { text: "Preencha o nome" }
-        }
-        if (!alphabeth.test(nome) || regex.test(nome)) {
-            { text: "O nome não pode conter números ou caracteres especiais" }
-        }
-    }
+    static validateNome() {}
 
-    static validateCPF(cpf: string) {
-        if (typeof cpf == undefined || cpf == null || cpf == "") {
-            { text: "Preencha o CPF" }
-        }
-    }
+    static validateIdentidade() {}
 
-    static validateSexo(sexo: string) {
-        if (typeof sexo == undefined) {
-            { text: "Selecione o sexo" }
-        }
-    }
+    static validateDataExp() {}
 
-    static validateOrgaoEmissor(orgaoEmissor: string) {
-        if (!(typeof orgaoEmissor == 'string' || orgaoEmissor == undefined || orgaoEmissor == null)) {
-            if (!alphabeth.test(orgaoEmissor)) {
-                { text: "Orgão emissor deve conter apenas letras" }
-            }
-        }
-    }
+    static validateOrgaoEmissor() {}
 
-    static validateCartaoSUS(cartaoSUS: string) {
-        if (!regex.test(cartaoSUS)) {
-            { text: "O cartão SUS deve conter apenas números" }
-        }
-    }
+    static validateCPF() {}
 
-    static validateBairro(bairro: string) {
-        if (!(bairro == "" || typeof bairro == undefined || bairro == null)) {
-            if (!(alphnumeric.test(bairro))) {
-                { text: "O bairro não deve conter caracteres especiais" }
-            }
-        }
-    }
+    static validateSexo() {}
 
-    static validateNumEnd(numeroEnd: string) {
-        if (!(typeof numeroEnd == "string" || numeroEnd == undefined || numeroEnd == null)) {
-            if (!regex.test(numeroEnd)) {
-                { text: "Somente números são permitidos para o número do endereço" }
-            }
-        }
-    }
-*/
+    static validateEstadoCivil() {}
+
+    static validateDataNasc() {}
+
+    static validateCartaoSus() {}
+
+    static validateEndereco() {}
+
+    static validateNumEnd() {}
+    
+    static validateBairro() {}
+
+    static validateCidade() {}
+
+    static validateNomeMae() {}
+
+    static validateNomePai() {}
+
+    static validateAposentado() {}
+
 }

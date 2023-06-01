@@ -1,4 +1,4 @@
-import { IUser } from "../interfaces/IUser";
+import { IHolder } from "../interfaces/IHolder";
 import RelativeRepository from "../repositories/RelativeRepository";
 
 
@@ -9,7 +9,7 @@ export default class RelativeService {
         this.relativeRepository = new RelativeRepository();
     }
 
-    async Create(body: IUser) {
+    async Create(body: IHolder) {
         return this.relativeRepository.Create(undefined);
     }
 

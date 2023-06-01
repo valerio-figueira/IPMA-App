@@ -1,5 +1,5 @@
-export interface IUser {
-    matricula: string;
+export interface IHolder {
+    matricula: number;
     nome: string;
     identidade: string;
     data_exp: string;
@@ -15,6 +15,5 @@ export interface IUser {
     cidade: string;
     nome_mae: string;
     nome_pai: string;
-    aposentado: string;
-    data_cadastro: string;
+    aposentado: boolean;
 }

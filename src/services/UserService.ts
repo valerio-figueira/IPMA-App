@@ -1,5 +1,5 @@
-import { IUser } from "../interfaces/IUser";
-import UserSchema from "../model/UserSchema";
+import { IHolder } from "../interfaces/IHolder";
+import HolderSchema from "../model/HolderSchema";
 import UserRepository from "../repositories/UserRepository";
 
 export default class UserService {
@@ -9,8 +9,8 @@ export default class UserService {
         this.userRepository = new UserRepository();
     }
 
-    async Create(body: IUser) {
-        const newUser = new UserSchema(body);
+    async Create(body: IHolder) {
+        const newUser = new HolderSchema(body);
 
         return this.userRepository.Create(newUser);
     }
@@ -23,9 +23,13 @@ export default class UserService {
         return this.userRepository.ReadOne(holder_id);
     }
 
-    async Update() {}
+    async Update(holder_id: string, query: IHolder) {
+        return this.userRepository.Update(holder_id, query);
+    }
 
-    async Delete() {}
+    async Delete(holder_id: string) {
+        return this.userRepository.Delete(holder_id);
+    }
 
 
 }

@@ -1,18 +1,19 @@
 import mysql, { FieldInfo, packetCallback } from 'mysql';
+require('dotenv').config();
 
-const DB_USER = process.env.DB_USER;
-const DB_PASSWORD = process.env.DB_PASSWORD;
-const DB_NAME = process.env.DB_NAME;
-const HOST_NAME = process.env.HOST_NAME;
 
 export default class ManageDB {
+    DB_USER = process.env.DB_USER;
+    DB_PASSWORD = process.env.DB_PASSWORD;
+    DB_NAME = process.env.DB_NAME;
+    HOST_NAME = process.env.HOST_NAME;
 
     createConnection() {
         return mysql.createConnection({
-            host: HOST_NAME,
-            user: DB_USER,
-            password: DB_PASSWORD,
-            database: DB_NAME,
+            host: this.HOST_NAME,
+            user: this.DB_USER,
+            password: this.DB_PASSWORD,
+            database: this.DB_NAME,
         });
     }
 
@@ -29,7 +30,7 @@ export default class ManageDB {
                 connection.query(query, (err: Error, results: packetCallback, fields: FieldInfo) => {
                     if (err) reject(err);
                     else resolve(results);
-                    
+
                     connection.end();
                 });
             });
