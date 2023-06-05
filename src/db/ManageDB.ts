@@ -28,6 +28,7 @@ export default class ManageDB {
                 }
 
                 connection.query(query, (err: Error, results: packetCallback, fields: FieldInfo) => {
+                    console.log(fields)
                     if (err) reject(err);
                     else resolve(results);
 

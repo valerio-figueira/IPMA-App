@@ -63,7 +63,7 @@ router.get("/:holder/relatives", async (req, res) => {
 
 // READ ONE
 router.get("/:holder/:relative", async (req, res) => {
-    relativeController.ReadAll(req, res);
+    relativeController.ReadOne(req, res);
 });
 
 // UPDATE

@@ -12,7 +12,7 @@ export default class UserController {
         try {
             res.status(201).json(await this.userService.Create(req.body))
         } catch (error: any) {
-            res.status(500).json({ error: error.message })
+            res.status(error.status || 500).json({ error: error.message })
         }
     }
 
@@ -20,7 +20,7 @@ export default class UserController {
         try {
             res.status(200).json(await this.userService.ReadAll(req.query))
         } catch (error: any) {
-            res.status(500).json({ error: error.message })
+            res.status(error.status || 500).json({ error: error.message })
         }
     }
 
@@ -28,7 +28,7 @@ export default class UserController {
         try {
             res.status(200).json(await this.userService.ReadOne(req.params.id))
         } catch (error: any) {
-            res.status(500).json({ error: error.message })
+            res.status(error.status || 500).json({ error: error.message })
         }
     }
 
@@ -36,7 +36,7 @@ export default class UserController {
         try {
             res.status(200).json(await this.userService.Update(req.params.id, req.body))
         } catch (error: any) {
-            res.status(500).json({ error: error.message })
+            res.status(error.status || 500).json({ error: error.message })
         }
     }
 
@@ -44,7 +44,7 @@ export default class UserController {
         try {
             res.status(200).json(await this.userService.Delete(req.params.id))
         } catch (error: any) {
-            res.status(500).json({ error: error.message })
+            res.status(error.status || 500).json({ error: error.message })
         }
     }
 

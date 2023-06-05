@@ -20,7 +20,7 @@ const app = express();
     app.use(json());
 
     // MIDDLEWARE TO REDIRECT ALL ROUTES
-    app.use("/users", Users);
+    app.use("/api/v1/users", Users);
     // app.use("/parcelamentos", Parcelamentos);
 
     // MIDDLEWARE FOR STATIC FILES

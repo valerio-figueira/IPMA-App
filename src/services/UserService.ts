@@ -1,6 +1,7 @@
 import { IHolder } from "../interfaces/IHolder";
 import HolderSchema from "../model/HolderSchema";
 import UserRepository from "../repositories/UserRepository";
+import CustomError from "../classes/CustomError";
 
 export default class UserService {
     userRepository: UserRepository;
@@ -20,7 +21,12 @@ export default class UserService {
     }
 
     async ReadOne(holder_id: string) {
-        return this.userRepository.ReadOne(holder_id);
+        const user = await this.userRepository.ReadOne(holder_id);
+
+        if(typeof user === 'object') {
+            if(user.length === 0) throw new CustomError('Usuário não encontrado', 400);
+            return user;
+        }
     }
 
     async Update(holder_id: string, query: IHolder) {
