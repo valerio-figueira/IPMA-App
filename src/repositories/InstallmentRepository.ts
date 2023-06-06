@@ -14,7 +14,8 @@ export default class InstallmentRepository {
     }
 
     async ReadOne(installment_id: string) {
-        return this.manageDB.createQuery(`SELECT * FROM PARCELAMENTOS WHERE id=${installment_id}`);
+        return this.manageDB.createQuery(`SELECT USUARIOS.id as id_usuario, USUARIOS.nome, PARCELAMENTOS.valor_total, PARCELAMENTOS.id as id_parcelamento, PARCELAMENTOS.qtd_parcelas, PARCELAMENTOS.valor_parcela FROM PARCELAMENTOS, USUARIOS
+        WHERE PARCELAMENTOS.id = ${installment_id} AND USUARIOS.id = PARCELAMENTOS.id_usuario`);
     }
 
     async Update() { }

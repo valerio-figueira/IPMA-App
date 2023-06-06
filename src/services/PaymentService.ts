@@ -7,13 +7,24 @@ export default class PaymentService {
         this.paymentRepository = new PaymentRepository();
     }
 
-    async Create() { }
+    async Create() {
+        // MAKE USER REQUEST TO SQL
+        /*
+        const usuario = result[0];
 
-    async ReadAll(holder: string | undefined = undefined) {
+        if (++usuario.qtd_parcelas_pagas > usuario.qtd_parcelas) {
+            con.end();
+            req.flash("error_msg", "Não foi possível registrar o pagamento, limite máximo de parcelas atingido");
+            res.redirect(301, req.get("referer"));
+        } else { // SUCCESS };
+        */
+    }
+
+    async ReadAll(holder: string) {
         return this.paymentRepository.ReadAll(holder);
     }
 
-    async ReadOne(holder: string, installment_id: string | undefined) {
+    async ReadOne(holder: string, installment_id: string) {
         return this.paymentRepository.ReadOne(holder, installment_id);
     }
 

@@ -18,7 +18,7 @@ export default class PaymentController {
 
     async ReadAll(req: Request, res: Response) { 
         try {
-            res.status(200).json(await this.paymentService.ReadAll((req.query.name as string)))
+            res.status(200).json(await this.paymentService.ReadAll(req.params.holder))
         } catch(error: any) {
             res.status(500).json(error.message)
         }
@@ -26,7 +26,7 @@ export default class PaymentController {
 
     async ReadOne(req: Request, res: Response) { 
         try {
-            res.status(200).json(await this.paymentService.ReadOne(req.params.id, (req.query.installment_id as string)))
+            res.status(200).json(await this.paymentService.ReadOne(req.params.holder, req.params.payment))
         } catch(error: any) {
             res.status(500).json(error.message)
         }
