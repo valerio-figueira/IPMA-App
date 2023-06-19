@@ -11,6 +11,7 @@ export default class UserService {
     }
 
     async Create(body: IHolder) {
+        console.log(body)
         const newUser = new HolderSchema(body);
 
         return this.userRepository.Create(newUser);

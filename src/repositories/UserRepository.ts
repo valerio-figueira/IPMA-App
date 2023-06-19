@@ -13,7 +13,7 @@ export default class UserRepository {
     }
 
     async ReadAll(query: { nome: string, tipo: string }) {
-        return this.manageDB.createQuery(`SELECT *, DATE_FORMAT(data_nasc, '%d/%m/%Y') as data_nasc, DATE_FORMAT(data_exp, '%d/%m/%Y') as data_exp, DATE_FORMAT(data_cadastro, '%d/%m/%Y') as data_cadastro FROM USUARIOS ${query.nome ? "WHERE nome LIKE " + "'" + query.nome + "%'" : ""} ${query.tipo === "ativos" ? "WHERE aposentado=0" : ""} ${query.tipo === "aposentados" ? "WHERE aposentado=1" : ""}`);
+        return this.manageDB.createQuery(`SELECT *, DATE_FORMAT(data_nasc, '%d/%m/%Y') as data_nasc, DATE_FORMAT(data_exp, '%d/%m/%Y') as data_exp, DATE_FORMAT(data_cadastro, '%d/%m/%Y') as data_cadastro FROM USUARIOS ${query.nome ? "WHERE nome LIKE " + "'%" + query.nome + "%'" : ""} ${query.tipo === "ativos" ? "WHERE aposentado=0" : ""} ${query.tipo === "aposentados" ? "WHERE aposentado=1" : ""}`);
     }
 
     async ReadOne(holder_id: string) {
