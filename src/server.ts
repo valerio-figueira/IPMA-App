@@ -42,8 +42,8 @@ export default class Server {
             credentials: true
         }));
 
-        this.APP.use(BodyParser.urlencoded({ extended: true }));
-        this.APP.use(json());
+        this.APP.use(BodyParser.urlencoded({ extended: false }));
+        this.APP.use(BodyParser.json());
 
         this.APP.use(session({
             secret: 'mystery key',
