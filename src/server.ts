@@ -48,7 +48,8 @@ export default class Server {
         this.APP.use(session({
             secret: 'mystery key',
             resave: false,
-            saveUninitialized: false
+            saveUninitialized: false,
+            cookie: { sameSite: 'none' }
         }))
 
         this.APP.use(express.static(path.join("public")));
